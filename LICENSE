@@ -1,6 +1,11 @@
 MIT License
 
-Copyright (c) 2025 Cù Thanh Cầm
+Copyright (c) 2025 PulsarTeam - K-Tech Innovation Challenge
+
+Team Members:
+- Trương Dương Bảo Minh (Frontend Developer & AI Engineer)
+- Cù Thanh Cầm (Project Manager & Backend Developer)
+- Trần Tuấn Anh (Back Developer & Data Analyst)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +24,18 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+ADDITIONAL TERMS FOR EDUCATIONAL USE:
+
+This project was developed as part of the K-Tech Innovation Challenge 2025.
+While the MIT License allows commercial use, we kindly request that:
+
+1. Educational institutions using this software provide attribution to PulsarTeam
+2. Derivative works acknowledge the original K-Tech Innovation Challenge project
+3. Commercial deployments consider contributing improvements back to the community
+
+For questions about licensing or collaboration, please contact:
+truongminh0949@gmail.com
+
