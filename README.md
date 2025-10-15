@@ -602,16 +602,6 @@ We welcome contributions! Please:
 
 ---
 
-## 🙏 Acknowledgments
-
-- **Google Gemini AI** - For powerful LLM capabilities
-- **Vercel** - For Next.js framework and hosting
-- **Factory.ai** - Design inspiration
-- **Augment Code** - UI/UX inspiration
-- **K-Tech** - For organizing this innovation challenge
-
----
-
 ## 📚 Additional Resources
 
 - [Next.js Documentation](https://nextjs.org/docs)
