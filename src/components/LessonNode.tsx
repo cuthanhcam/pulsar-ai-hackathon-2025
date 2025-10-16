@@ -44,20 +44,20 @@ export default function LessonNode({ data }: LessonNodeProps) {
             ? 'bg-green-500 shadow-md' 
             : 'bg-gray-100'
         }`}>
-          {data.completed ? (
+            {data.completed ? (
             <CheckCircle className="w-4 h-4 text-white" />
-          ) : (
+            ) : (
             <Circle className="w-4 h-4 text-gray-400" />
-          )}
-        </div>
+            )}
+          </div>
         
         {/* Content */}
-        <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0">
           <div className={`text-xs font-semibold leading-tight mb-1 ${
             data.completed ? 'text-green-900' : 'text-gray-900'
           }`}>
             {data.label}
-          </div>
+            </div>
           <div className="flex items-center gap-1.5">
             <Clock className={`w-3 h-3 ${data.completed ? 'text-green-600' : 'text-gray-500'}`} />
             <span className={`text-[10px] font-medium ${data.completed ? 'text-green-700' : 'text-gray-600'}`}>

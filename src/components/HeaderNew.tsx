@@ -54,7 +54,8 @@ export default function HeaderNew() {
     if (sessionData.status === 'authenticated') {
       fetchCredits()
     }
-  }, [session, sessionData.status])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionData.status])
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -113,6 +114,9 @@ export default function HeaderNew() {
               </NavLink>
               <NavLink href="/dashboard">
                 Dashboard
+              </NavLink>
+              <NavLink href="/pricing">
+                Pricing
               </NavLink>
               
               {/* Credits Badge */}
@@ -242,6 +246,19 @@ export default function HeaderNew() {
                 }`}
               >
                 Dashboard
+              </Link>
+              
+              <Link 
+                href="/pricing"
+                onClick={() => setShowMobileMenu(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all ${
+                  pathname === '/pricing' 
+                    ? 'bg-zinc-800 text-white' 
+                    : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
+                }`}
+              >
+                <Zap className="w-4 h-4" />
+                Pricing
               </Link>
             </div>
           </div>

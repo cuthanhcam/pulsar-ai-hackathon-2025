@@ -7,12 +7,20 @@
   --foreground: #171717;
 }
 
+* {
+  /* Smooth scrolling for all elements */
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   margin: 0;
   padding: 0;
+  /* Enable GPU acceleration */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer utilities {
@@ -96,9 +104,12 @@ body {
     animation: fadeIn 0.15s ease-out;
   }
 
-  /* Scrollbar styling */
+  /* Scrollbar styling with performance optimization */
   .scrollbar-thin {
     scrollbar-width: thin;
+    /* Enable hardware acceleration for smooth scrolling */
+    transform: translateZ(0);
+    -webkit-overflow-scrolling: touch;
   }
 
   .scrollbar-thin::-webkit-scrollbar {
@@ -109,6 +120,8 @@ body {
   .scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
     background-color: rgb(209, 213, 219);
     border-radius: 3px;
+    /* Smooth transitions for scrollbar */
+    transition: background-color 0.2s ease;
   }
 
   .scrollbar-thumb-gray-300:hover::-webkit-scrollbar-thumb {
@@ -121,6 +134,18 @@ body {
 
   .scrollbar-thumb-gray-400::-webkit-scrollbar-thumb {
     background-color: rgb(156, 163, 175);
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Optimize scroll performance */
+  .scrollbar-thin,
+  .overflow-y-auto,
+  .overflow-x-auto,
+  .overflow-auto {
+    /* Force GPU acceleration */
+    will-change: scroll-position;
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 
   /* Radix scroll area */

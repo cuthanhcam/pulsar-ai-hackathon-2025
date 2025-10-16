@@ -8,6 +8,11 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'PulsarTeam | AI-Powered Learning Platform',
   description: 'Transform your learning journey with AI-powered knowledge systematization. Master any subject with personalized, structured learning paths.',
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 }
 
 export default function RootLayout({

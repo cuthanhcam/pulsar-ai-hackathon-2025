@@ -41,13 +41,13 @@ export default function ModuleNode({ data }: ModuleNodeProps) {
             {data.moduleNumber ? (
               <span className="text-lg font-extrabold text-white">{data.moduleNumber}</span>
             ) : (
-              <FolderOpen className="w-5 h-5 text-white" />
+            <FolderOpen className="w-5 h-5 text-white" />
             )}
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-[10px] font-bold text-white/80 uppercase tracking-wide mb-0.5">
               {data.moduleNumber ? `Module ${data.moduleNumber}` : 'Module'}
-            </div>
+          </div>
             <div className="text-xs font-bold text-white leading-tight">{data.label}</div>
           </div>
         </div>

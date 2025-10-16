@@ -11,10 +11,11 @@ export default function OnboardingWrapper() {
 
   useEffect(() => {
     // Show onboarding modal when user just logged in
-    if (status === 'authenticated' && session && !hasCheckedApiKey) {
+    if (status === 'authenticated' && session?.user && !hasCheckedApiKey) {
       checkApiKeyAndShowModal()
     }
-  }, [status, session, hasCheckedApiKey])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, session?.user?.id, hasCheckedApiKey])
 
   const checkApiKeyAndShowModal = async () => {
     try {

@@ -62,27 +62,39 @@ export default function AITutorPage() {
     setGeneratedCourse((prevCourse: Course | null) => {
       if (!prevCourse) return prevCourse
 
+      // Deep clone to ensure React detects the change
       const updatedModules = prevCourse.modules?.map((mod: any) => {
         // Update in sections
         if (mod.sections) {
-          const updatedSections = mod.sections.map((s: any) => 
-            s.id === sectionId ? { ...s, completed: true } : s
-          )
-          return { ...mod, sections: updatedSections }
+          const hasSection = mod.sections.some((s: any) => s.id === sectionId)
+          if (hasSection) {
+            const updatedSections = mod.sections.map((s: any) => 
+              s.id === sectionId ? { ...s, completed: true } : { ...s }
+            )
+            return { ...mod, sections: updatedSections }
+          }
         }
         
         // Update in lessons (for backward compatibility)
         if (mod.lessons) {
-          const updatedLessons = mod.lessons.map((l: any) => 
-            l.id === sectionId ? { ...l, completed: true } : l
-          )
-          return { ...mod, lessons: updatedLessons }
+          const hasLesson = mod.lessons.some((l: any) => l.id === sectionId)
+          if (hasLesson) {
+            const updatedLessons = mod.lessons.map((l: any) => 
+              l.id === sectionId ? { ...l, completed: true } : { ...l }
+            )
+            return { ...mod, lessons: updatedLessons }
+          }
         }
         
-        return mod
+        return { ...mod }
       })
 
-      return { ...prevCourse, modules: updatedModules }
+      // Create completely new course object with updated timestamp to force re-render
+      return { 
+        ...prevCourse, 
+        modules: updatedModules,
+        _updateKey: Date.now() // Force re-render
+      } as Course
     })
   }
 
@@ -157,13 +169,13 @@ export default function AITutorPage() {
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
                     <span className="text-zinc-500 font-medium">Interactive Content</span>
                   </div>
-                </div>
               </div>
+            </div>
 
               {/* Right Side - Trending Topics */}
               <div className="hidden lg:block">
                 <PopularTopicsNew onTopicClick={setSearchTerm} />
-              </div>
+            </div>
             </div>
           </div>
         </div>
@@ -238,6 +250,7 @@ export default function AITutorPage() {
                 <div className="h-[80vh] w-full">
                   {viewMode === 'mindmap' ? (
                     <CourseVisualization
+                      key={(generatedCourse as any)._updateKey || generatedCourse.id}
                       course={generatedCourse}
                       onLessonClick={(lessonId) => {
                         let foundLesson: any = null

@@ -102,27 +102,39 @@ export default function DynamicCoursePage() {
     setCourse((prevCourse: any) => {
       if (!prevCourse) return prevCourse
 
+      // Deep clone to ensure React detects the change
       const updatedModules = prevCourse.modules.map((mod: any) => {
         // Update in sections
         if (mod.sections) {
-          const updatedSections = mod.sections.map((s: any) => 
-            s.id === sectionId ? { ...s, completed: true } : s
-          )
-          return { ...mod, sections: updatedSections }
+          const hasSection = mod.sections.some((s: any) => s.id === sectionId)
+          if (hasSection) {
+            const updatedSections = mod.sections.map((s: any) => 
+              s.id === sectionId ? { ...s, completed: true } : { ...s }
+            )
+            return { ...mod, sections: updatedSections }
+          }
         }
         
         // Update in lessons (for backward compatibility)
         if (mod.lessons) {
-          const updatedLessons = mod.lessons.map((l: any) => 
-            l.id === sectionId ? { ...l, completed: true } : l
-          )
-          return { ...mod, lessons: updatedLessons }
+          const hasLesson = mod.lessons.some((l: any) => l.id === sectionId)
+          if (hasLesson) {
+            const updatedLessons = mod.lessons.map((l: any) => 
+              l.id === sectionId ? { ...l, completed: true } : { ...l }
+            )
+            return { ...mod, lessons: updatedLessons }
+          }
         }
         
-        return mod
+        return { ...mod }
       })
 
-      return { ...prevCourse, modules: updatedModules }
+      // Create completely new course object to force re-render
+      return { 
+        ...prevCourse, 
+        modules: updatedModules,
+        _updateKey: Date.now() // Force re-render
+      }
     })
   }
 
@@ -160,20 +172,20 @@ export default function DynamicCoursePage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header with Back Button */}
         <div className="flex items-center gap-3 mb-6">
-          <Link href="/dashboard">
+            <Link href="/dashboard">
             <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-orange-500/50 text-white rounded-xl transition-all duration-300">
-              <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Back</span>
-            </button>
-          </Link>
+              </button>
+            </Link>
           <div className="h-6 w-px bg-zinc-800"></div>
-          <div>
+            <div>
             <div className="flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-orange-500" />
               <span className="text-sm text-zinc-500 font-medium">Course</span>
             </div>
+            </div>
           </div>
-        </div>
 
         {/* View Mode Toggle & Stats */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
@@ -228,6 +240,7 @@ export default function DynamicCoursePage() {
             <div className="h-[80vh]">
               {course.mindmap || course.modules ? (
                 <CourseVisualization
+                  key={(course as any)._updateKey || course.id}
                   course={course}
                   onSectionClick={(sectionId) => handleSectionClick(sectionId)}
                 />
@@ -345,12 +358,12 @@ export default function DynamicCoursePage() {
                       </div>
 
                       {/* Sections List */}
-                      <div className="space-y-2">
+                  <div className="space-y-2">
                         {sections.length > 0 ? (
                           sections.map((item: any, idx: number) => (
-                            <button
-                              key={item.id}
-                              onClick={() => handleSectionClick(item.id, mod.id)}
+                        <button
+                          key={item.id}
+                          onClick={() => handleSectionClick(item.id, mod.id)}
                               className="w-full group flex items-center justify-between p-3 sm:p-3.5 bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-700 hover:border-orange-500/50 rounded-lg transition-all duration-300 text-left"
                             >
                               <div className="flex items-center gap-3 flex-1">
@@ -361,8 +374,8 @@ export default function DynamicCoursePage() {
                                 )}
                                 <div className="flex-1 min-w-0">
                                   <span className="text-white font-medium text-sm sm:text-base block truncate">
-                                    {idx + 1}. {item.title}
-                                  </span>
+                            {idx + 1}. {item.title}
+                          </span>
                                   {item.description && (
                                     <span className="text-zinc-500 text-xs block truncate mt-0.5">{item.description}</span>
                                   )}
@@ -375,15 +388,15 @@ export default function DynamicCoursePage() {
                                 </span>
                                 <ArrowLeft className="w-4 h-4 text-zinc-600 group-hover:text-orange-500 transition-colors rotate-180" />
                               </div>
-                            </button>
-                          ))
-                        ) : (
+                        </button>
+                      ))
+                    ) : (
                           <div className="text-zinc-500 text-sm p-3 bg-zinc-900/30 border border-zinc-700 rounded-lg text-center">
-                            No sections available yet.
-                          </div>
-                        )}
+                        No sections available yet.
                       </div>
-                    </div>
+                    )}
+                  </div>
+                </div>
                   )
                 })}
               </div>
