@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { Home, ArrowLeft, Search, Sparkles } from 'lucide-react'
+import { Home, ArrowLeft, Search, Sparkles, Bot, LayoutDashboard, Zap, Settings } from 'lucide-react'
 
 // Lazy load canvas for better performance
 const TechCanvas = dynamic(() => import('@/components/TechCanvas'), {
@@ -85,21 +85,57 @@ export default function NotFound() {
           <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-2xl p-8 shadow-2xl">
             <h3 className="text-lg font-black text-white mb-4">Popular Pages</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {[
-                { href: '/ai-tutor', label: 'AI Tutor', icon: '🤖' },
-                { href: '/dashboard', label: 'Dashboard', icon: '📊' },
-                { href: '/pricing', label: 'Pricing', icon: '💎' },
-                { href: '/settings', label: 'Settings', icon: '⚙️' }
-              ].map((link) => (
-                <Link key={link.href} href={link.href}>
-                  <div className="group p-4 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700 hover:border-orange-500/50 rounded-xl transition-all cursor-pointer text-center">
-                    <div className="text-2xl mb-2">{link.icon}</div>
-                    <div className="text-sm font-semibold text-zinc-300 group-hover:text-white transition-colors">
-                      {link.label}
+              <Link href="/ai-tutor">
+                <div className="group p-4 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700 hover:border-orange-500/50 rounded-xl transition-all cursor-pointer text-center">
+                  <div className="flex items-center justify-center mb-3">
+                    <div className="p-3 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-xl group-hover:from-orange-500/30 group-hover:to-orange-600/30 transition-all">
+                      <Bot className="w-6 h-6 text-orange-500" />
                     </div>
                   </div>
-                </Link>
-              ))}
+                  <div className="text-sm font-semibold text-zinc-300 group-hover:text-white transition-colors">
+                    AI Tutor
+                  </div>
+                </div>
+              </Link>
+              
+              <Link href="/dashboard">
+                <div className="group p-4 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700 hover:border-orange-500/50 rounded-xl transition-all cursor-pointer text-center">
+                  <div className="flex items-center justify-center mb-3">
+                    <div className="p-3 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl group-hover:from-blue-500/30 group-hover:to-blue-600/30 transition-all">
+                      <LayoutDashboard className="w-6 h-6 text-blue-500" />
+                    </div>
+                  </div>
+                  <div className="text-sm font-semibold text-zinc-300 group-hover:text-white transition-colors">
+                    Dashboard
+                  </div>
+                </div>
+              </Link>
+              
+              <Link href="/pricing">
+                <div className="group p-4 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700 hover:border-orange-500/50 rounded-xl transition-all cursor-pointer text-center">
+                  <div className="flex items-center justify-center mb-3">
+                    <div className="p-3 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-xl group-hover:from-purple-500/30 group-hover:to-purple-600/30 transition-all">
+                      <Zap className="w-6 h-6 text-purple-500" />
+                    </div>
+                  </div>
+                  <div className="text-sm font-semibold text-zinc-300 group-hover:text-white transition-colors">
+                    Pricing
+                  </div>
+                </div>
+              </Link>
+              
+              <Link href="/settings">
+                <div className="group p-4 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700 hover:border-orange-500/50 rounded-xl transition-all cursor-pointer text-center">
+                  <div className="flex items-center justify-center mb-3">
+                    <div className="p-3 bg-gradient-to-br from-zinc-500/20 to-zinc-600/20 rounded-xl group-hover:from-zinc-500/30 group-hover:to-zinc-600/30 transition-all">
+                      <Settings className="w-6 h-6 text-zinc-400" />
+                    </div>
+                  </div>
+                  <div className="text-sm font-semibold text-zinc-300 group-hover:text-white transition-colors">
+                    Settings
+                  </div>
+                </div>
+              </Link>
             </div>
           </div>
 
