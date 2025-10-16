@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Key, AlertTriangle, Loader2 } from 'lucide-react'
+import { X, Key, AlertTriangle, Loader2, CheckCircle2 } from 'lucide-react'
 
 interface APIKeyErrorModalProps {
   isOpen: boolean
@@ -36,8 +36,18 @@ export default function APIKeyErrorModal({ isOpen, onClose, onSuccess, errorMess
       const data = await response.json()
 
       if (response.ok && data.success) {
-        // Success
-        alert('✅ API key đã được cập nhật thành công!')
+        // Success - Show custom alert or toast
+        const successDiv = document.createElement('div')
+        successDiv.className = 'fixed top-4 right-4 z-[9999] bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 animate-bounce'
+        successDiv.innerHTML = `
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="font-semibold">API key đã được cập nhật thành công!</span>
+        `
+        document.body.appendChild(successDiv)
+        setTimeout(() => successDiv.remove(), 3000)
+        
         setApiKey('')
         onSuccess()
         onClose()
