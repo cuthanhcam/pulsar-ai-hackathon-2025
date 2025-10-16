@@ -34,7 +34,8 @@ export async function GET() {
         geminiApiKey: true,
         credits: true,
         name: true,
-        email: true
+        email: true,
+        phone: true
       }
     })
 
@@ -46,6 +47,14 @@ export async function GET() {
     }
 
     const data = {
+      user: {
+        geminiApiKey: user.geminiApiKey || null,
+        credits: Number(user.credits),
+        name: user.name,
+        email: user.email,
+        phone: user.phone
+      },
+      // Keep backward compatibility
       geminiApiKey: user.geminiApiKey || null,
       credits: Number(user.credits),
       name: user.name,
