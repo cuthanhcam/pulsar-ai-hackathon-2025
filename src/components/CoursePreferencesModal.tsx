@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, ArrowRight, ArrowLeft, Sparkles, Clock, Target, BookOpen, Lightbulb } from 'lucide-react'
+import { 
+  X, ArrowRight, ArrowLeft, Sparkles, Clock, Target, BookOpen, Lightbulb
+} from 'lucide-react'
 
 interface CoursePreferences {
   learningPreference: string
@@ -157,10 +159,10 @@ export default function CoursePreferencesModal({
 
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { value: 'visual', label: 'Visual', desc: 'Diagrams & charts', icon: '📊' },
-                  { value: 'hands-on', label: 'Hands-on', desc: 'Interactive', icon: '💻' },
-                  { value: 'reading', label: 'Reading', desc: 'Text & articles', icon: '📚' },
-                  { value: 'video', label: 'Video', desc: 'Tutorials', icon: '🎥' }
+                  { value: 'visual', label: 'Visual', desc: 'Diagrams & charts', Icon: Target, color: 'text-blue-400' },
+                  { value: 'hands-on', label: 'Hands-on', desc: 'Interactive', Icon: Sparkles, color: 'text-green-400' },
+                  { value: 'reading', label: 'Reading', desc: 'Text & articles', Icon: BookOpen, color: 'text-purple-400' },
+                  { value: 'video', label: 'Video', desc: 'Tutorials', Icon: Lightbulb, color: 'text-pink-400' }
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -172,7 +174,13 @@ export default function CoursePreferencesModal({
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xl">{option.icon}</span>
+                      <div className={`p-2 rounded-lg bg-gradient-to-br ${
+                        preferences.learningPreference === option.value 
+                          ? 'from-orange-500/30 to-orange-600/30' 
+                          : 'from-zinc-700/30 to-zinc-800/30'
+                      }`}>
+                        <option.Icon className={`w-5 h-5 ${preferences.learningPreference === option.value ? 'text-orange-400' : option.color}`} />
+                      </div>
                     </div>
                     <div className={`font-bold text-sm mb-0.5 ${preferences.learningPreference === option.value ? 'text-orange-400' : 'text-white'}`}>{option.label}</div>
                     <div className="text-xs text-zinc-400">{option.desc}</div>
@@ -197,10 +205,10 @@ export default function CoursePreferencesModal({
 
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { value: '15min', label: '15 min', desc: 'Quick', icon: '⚡' },
-                  { value: '30min', label: '30 min', desc: 'Balanced', icon: '⏱️' },
-                  { value: '1hour', label: '1 hour', desc: 'Deep dive', icon: '📖' },
-                  { value: '2hours', label: '2+ hours', desc: 'Intensive', icon: '🔥' }
+                  { value: '15min', label: '15 min', desc: 'Quick', Icon: Sparkles, color: 'text-yellow-400' },
+                  { value: '30min', label: '30 min', desc: 'Balanced', Icon: Clock, color: 'text-blue-400' },
+                  { value: '1hour', label: '1 hour', desc: 'Deep dive', Icon: BookOpen, color: 'text-purple-400' },
+                  { value: '2hours', label: '2+ hours', desc: 'Intensive', Icon: Target, color: 'text-red-400' }
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -211,7 +219,15 @@ export default function CoursePreferencesModal({
                         : 'border-zinc-700 hover:border-orange-500/50 bg-zinc-800'
                     }`}
                   >
-                    <div className="text-2xl mb-1.5">{option.icon}</div>
+                    <div className="flex items-center justify-center mb-2">
+                      <div className={`p-2 rounded-lg bg-gradient-to-br ${
+                        preferences.learningTime === option.value 
+                          ? 'from-orange-500/30 to-orange-600/30' 
+                          : 'from-zinc-700/30 to-zinc-800/30'
+                      }`}>
+                        <option.Icon className={`w-6 h-6 ${preferences.learningTime === option.value ? 'text-orange-400' : option.color}`} />
+                      </div>
+                    </div>
                     <div className={`font-bold text-sm mb-0.5 ${preferences.learningTime === option.value ? 'text-orange-400' : 'text-white'}`}>{option.label}</div>
                     <div className="text-xs text-zinc-400">{option.desc}</div>
                   </button>
@@ -235,10 +251,10 @@ export default function CoursePreferencesModal({
 
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { value: 'beginner', label: 'Beginner', desc: 'Starting out', icon: '🌱', level: 1 },
-                  { value: 'intermediate', label: 'Intermediate', desc: 'Some exp', icon: '🚀', level: 2 },
-                  { value: 'advanced', label: 'Advanced', desc: 'Mastery', icon: '⚡', level: 3 },
-                  { value: 'expert', label: 'Expert', desc: 'Cutting edge', icon: '🎯', level: 4 }
+                  { value: 'beginner', label: 'Beginner', desc: 'Starting out', Icon: BookOpen, color: 'text-green-400', level: 1 },
+                  { value: 'intermediate', label: 'Intermediate', desc: 'Some exp', Icon: Lightbulb, color: 'text-blue-400', level: 2 },
+                  { value: 'advanced', label: 'Advanced', desc: 'Mastery', Icon: Target, color: 'text-yellow-400', level: 3 },
+                  { value: 'expert', label: 'Expert', desc: 'Cutting edge', Icon: Sparkles, color: 'text-red-400', level: 4 }
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -250,7 +266,13 @@ export default function CoursePreferencesModal({
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-xl">{option.icon}</span>
+                      <div className={`p-1.5 rounded-lg bg-gradient-to-br ${
+                        preferences.skillLevel === option.value 
+                          ? 'from-green-500/30 to-green-600/30' 
+                          : 'from-zinc-700/30 to-zinc-800/30'
+                      }`}>
+                        <option.Icon className={`w-4 h-4 ${preferences.skillLevel === option.value ? 'text-green-400' : option.color}`} />
+                      </div>
                       <div className="flex gap-0.5">
                         {Array.from({ length: option.level }).map((_, i) => (
                           <div key={i} className={`w-1 h-4 ${preferences.skillLevel === option.value ? 'bg-green-500' : 'bg-zinc-600'}`}></div>
@@ -340,10 +362,10 @@ export default function CoursePreferencesModal({
 
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { value: 'structured', label: 'Structured', desc: 'Step-by-step', icon: '📋' },
-                  { value: 'problem-solving', label: 'Problem-Solving', desc: 'Challenges', icon: '🧩' },
-                  { value: 'exploratory', label: 'Exploratory', desc: 'Self-directed', icon: '🔍' },
-                  { value: 'mentorship', label: 'Mentorship', desc: 'Guided', icon: '👨‍🏫' }
+                  { value: 'structured', label: 'Structured', desc: 'Step-by-step', Icon: BookOpen, color: 'text-blue-400' },
+                  { value: 'problem-solving', label: 'Problem-Solving', desc: 'Challenges', Icon: Target, color: 'text-purple-400' },
+                  { value: 'exploratory', label: 'Exploratory', desc: 'Self-directed', Icon: Sparkles, color: 'text-cyan-400' },
+                  { value: 'mentorship', label: 'Mentorship', desc: 'Guided', Icon: Lightbulb, color: 'text-orange-400' }
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -355,7 +377,13 @@ export default function CoursePreferencesModal({
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-xl">{option.icon}</span>
+                      <div className={`p-2 rounded-lg bg-gradient-to-br ${
+                        preferences.instructionalMethod === option.value 
+                          ? 'from-blue-500/30 to-blue-600/30' 
+                          : 'from-zinc-700/30 to-zinc-800/30'
+                      }`}>
+                        <option.Icon className={`w-5 h-5 ${preferences.instructionalMethod === option.value ? 'text-blue-400' : option.color}`} />
+                      </div>
                     </div>
                     <div className={`font-bold text-sm mb-0.5 ${preferences.instructionalMethod === option.value ? 'text-blue-400' : 'text-white'}`}>{option.label}</div>
                     <div className="text-xs text-zinc-400">{option.desc}</div>

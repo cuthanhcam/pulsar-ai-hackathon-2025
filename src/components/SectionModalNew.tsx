@@ -1,6 +1,6 @@
 'use client'
 
-import { X, Clock, Loader2, BookOpen, Send, Sparkles, MessageCircle, CheckCircle, Trophy, Zap, Copy, Check, Minimize2, Maximize2, Bot } from 'lucide-react'
+import { X, Clock, Loader2, BookOpen, Send, Sparkles, MessageCircle, CheckCircle, Trophy, Zap, Copy, Check, Minimize2, Maximize2, Bot, ThumbsUp, TrendingUp } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
@@ -70,6 +70,11 @@ export default function SectionModalNew({
   // Completion state
   const [isCompleting, setIsCompleting] = useState(false)
   const [isCompleted, setIsCompleted] = useState(false)
+  
+  // Text selection state
+  const [selectedText, setSelectedText] = useState('')
+  const [selectionPosition, setSelectionPosition] = useState<{x: number, y: number} | null>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (isOpen && section.id) {
@@ -84,6 +89,102 @@ export default function SectionModalNew({
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [chatHistory, isChatOpen, isChatMinimized])
+  
+  // Handle text selection
+  const handleTextSelection = () => {
+    const selection = window.getSelection()
+    const text = selection?.toString().trim()
+    
+    if (text && text.length > 0 && contentRef.current) {
+      const range = selection?.getRangeAt(0)
+      const rect = range?.getBoundingClientRect()
+      
+      if (rect) {
+        setSelectedText(text)
+        setSelectionPosition({
+          x: rect.right + 10,
+          y: rect.top + window.scrollY
+        })
+      }
+    } else {
+      setSelectedText('')
+      setSelectionPosition(null)
+    }
+  }
+  
+  // Handle AI explain selected text
+  const handleExplainSelection = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (!selectedText) return
+    
+    // Save selected text before clearing
+    const textToExplain = selectedText
+    
+    // Clear selection first
+    window.getSelection()?.removeAllRanges()
+    setSelectedText('')
+    setSelectionPosition(null)
+    
+    // Open AI chat if closed
+    if (!isChatOpen) {
+      setIsChatOpen(true)
+    }
+    
+    // Minimize if was minimized
+    if (isChatMinimized) {
+      setIsChatMinimized(false)
+    }
+    
+    // Send message to AI
+    const userMessage = `Giải thích đoạn này: "${textToExplain}"`
+    setChatHistory(prev => [...prev, { role: 'user', content: userMessage }])
+    setIsChatLoading(true)
+    
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMessage,
+          context: `Section: ${section.title}\nCourse: ${course.title}\nFull content for context:\n${sectionContent.substring(0, 2000)}...`,
+        }),
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setChatHistory(prev => [...prev, { role: 'assistant', content: data.response }])
+      } else {
+        setChatHistory(prev => [...prev, { 
+          role: 'assistant', 
+          content: 'Xin lỗi, có lỗi xảy ra. Vui lòng thử lại.' 
+        }])
+      }
+    } catch (error) {
+      console.error('Chat error:', error)
+      setChatHistory(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'Không thể kết nối đến AI Assistant.' 
+      }])
+    } finally {
+      setIsChatLoading(false)
+    }
+  }
+  
+  // Clear selection when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (!target.closest('.selection-tooltip') && !target.closest('.prose')) {
+        setSelectedText('')
+        setSelectionPosition(null)
+      }
+    }
+    
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const handleMarkAsComplete = async () => {
     setIsCompleting(true)
@@ -406,7 +507,11 @@ export default function SectionModalNew({
                   <div className="w-full">
                     <div className="py-8 px-6 sm:px-12 md:px-16 lg:px-20 w-full max-w-6xl mx-auto overflow-visible">
                       {/* Main Content */}
-                      <div className="prose prose-sm max-w-none w-full break-words overflow-visible mobile-lesson-content">
+                      <div 
+                        ref={contentRef}
+                        className="prose prose-sm max-w-none w-full break-words overflow-visible mobile-lesson-content"
+                        onMouseUp={handleTextSelection}
+                      >
                         <ReactMarkdown 
                           remarkPlugins={[remarkGfm]}
                           rehypePlugins={[rehypeHighlight]}
@@ -706,9 +811,30 @@ export default function SectionModalNew({
                           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 mb-4">
                             <span className="text-3xl font-bold text-white">{calculateScore()}%</span>
                           </div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                            {calculateScore() >= 80 ? '🎉 Xuất sắc!' : calculateScore() >= 60 ? '👍 Tốt!' : '💪 Cố gắng thêm!'}
-                          </h3>
+                          <div className="flex items-center justify-center gap-3 mb-2">
+                            {calculateScore() >= 80 ? (
+                              <>
+                                <div className="p-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full">
+                                  <Trophy className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-900">Xuất sắc!</h3>
+                              </>
+                            ) : calculateScore() >= 60 ? (
+                              <>
+                                <div className="p-3 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full">
+                                  <ThumbsUp className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-900">Tốt!</h3>
+                              </>
+                            ) : (
+                              <>
+                                <div className="p-3 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full">
+                                  <TrendingUp className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-900">Cố gắng thêm!</h3>
+                              </>
+                            )}
+                          </div>
                           <p className="text-gray-600 mb-6">
                             Bạn trả lời đúng <span className="font-bold text-blue-600">
                               {quiz.filter(q => selectedAnswers[q.id] === q.correctAnswer).length}/{quiz.length}
@@ -986,6 +1112,31 @@ export default function SectionModalNew({
         </div>
 
       </div>
+      
+      {/* Floating AI Button for Selected Text */}
+      {selectedText && selectionPosition && (
+        <div 
+          className="selection-tooltip fixed z-[9999] animate-in fade-in slide-in-from-bottom-2 duration-200"
+          style={{
+            left: `${selectionPosition.x}px`,
+            top: `${selectionPosition.y}px`,
+            pointerEvents: 'auto',
+          }}
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={handleExplainSelection}
+            onMouseDown={(e) => e.stopPropagation()}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full shadow-2xl border-2 border-white transition-all hover:scale-110 group"
+            title="Hỏi AI về đoạn này"
+          >
+            <Bot className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+            <span className="text-sm font-semibold">Giải thích</span>
+            <Sparkles className="w-3 h-3 group-hover:scale-125 transition-transform" />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
