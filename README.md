@@ -414,10 +414,17 @@ PulsarTeam-AI-Learning/
 
 | Name | Role | Responsibilities |
 |------|------|------------------|
-| **Trương Dương Bảo Minh** | Frontend Developer & AI Engineer | UI/UX design, AI integration, frontend architecture |
-| **Cù Thanh Cầm** | Project Manager & Backend Developments | Project planning, team coordination, documentation |
-| **Trần Tuấn Anh** | Backend Developer & Data Analyst | Database design, API development, authentication |
+| **Trương Dương Bảo Minh** | Front Developer & AI Engineer | UI/UX design, AI integration, frontend architecture |
+| **Cù Thanh Cầm** | Project Manager | Project planning, team coordination, documentation |
+| **Trần Tuấn Anh** | Back Developer | Database design, API development, authentication |
 
+### Project Timeline
+
+- **Week 1-2**: Planning, design system, database schema
+- **Week 3-4**: Frontend development, component library
+- **Week 5-6**: AI integration, backend APIs
+- **Week 7-8**: Testing, optimization, documentation
+- **Week 9**: Final polish, deployment preparation
 
 ---
 
@@ -596,9 +603,19 @@ We welcome contributions! Please:
 
 **PulsarTeam** - K-Tech Innovation Challenge 2025
 
-- 📧 Email: truongminh0949@gmail.com
-- 🌐 Website: https://laptop-jfecre1c.tail0882b7.ts.net/
-- 📱 Facebook: [@PulsarTeamDev](https://www.facebook.com/m.minb1805)
+- 📧 Email: pulsarteam.dev@gmail.com
+- 🌐 Website: [Coming Soon]
+- 📱 Twitter: [@PulsarTeamDev](https://twitter.com/PulsarTeamDev)
+
+---
+
+## 🙏 Acknowledgments
+
+- **Google Gemini AI** - For powerful LLM capabilities
+- **Vercel** - For Next.js framework and hosting
+- **Factory.ai** - Design inspiration
+- **Augment Code** - UI/UX inspiration
+- **K-Tech** - For organizing this innovation challenge
 
 ---
 

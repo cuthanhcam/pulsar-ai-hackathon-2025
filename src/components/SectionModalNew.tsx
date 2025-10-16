@@ -4,6 +4,7 @@ import { X, Clock, Loader2, BookOpen, Send, Sparkles, MessageCircle, CheckCircle
 import { useState, useEffect, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
+import remarkGfm from 'remark-gfm'
 
 interface SectionModalProps {
   isOpen: boolean
@@ -51,6 +52,7 @@ export default function SectionModalNew({
   const [isChatLoading, setIsChatLoading] = useState(false)
   const [isChatMinimized, setIsChatMinimized] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [showQuickQuestions, setShowQuickQuestions] = useState(true)
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
   
@@ -91,15 +93,16 @@ export default function SectionModalNew({
       })
 
       if (response.ok) {
-        setIsCompleted(true)
-        // Call callback to update parent state
+        // Update parent state FIRST
         if (onSectionComplete) {
           onSectionComplete(section.id)
         }
+        // Then update local state
+        setIsCompleted(true)
         // Show success message briefly then close
         setTimeout(() => {
           onClose()
-        }, 1500)
+        }, 1000)
       } else {
         setError('Failed to mark as complete')
       }
@@ -250,18 +253,29 @@ export default function SectionModalNew({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+    <div 
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" 
+      onClick={onClose}
+      style={{ 
+        transform: 'translateZ(0)',
+        willChange: 'opacity'
+      }}
+    >
       <div 
         className="bg-white rounded-2xl shadow-2xl w-full max-w-[95vw] h-[92vh] flex flex-col overflow-hidden border border-gray-200"
         onClick={(e) => e.stopPropagation()}
+        style={{ 
+          transform: 'translateZ(0)',
+          willChange: 'transform'
+        }}
       >
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200 bg-white">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-sm text-blue-600">
-              <span className="hover:underline cursor-pointer">{course.title}</span>
-              <span className="text-gray-400">→</span>
-              <span className="hover:underline cursor-pointer">{module.title}</span>
+            <div className="flex items-center gap-2 text-base font-bold text-gray-900">
+              <span className="hover:text-orange-600 cursor-pointer transition-colors">{course.title}</span>
+              <span className="text-gray-400 font-normal">→</span>
+              <span className="hover:text-orange-600 cursor-pointer transition-colors">{module.title}</span>
             </div>
             <button
               onClick={onClose}
@@ -289,12 +303,12 @@ export default function SectionModalNew({
               </span>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">100%</span>
-                <div className="w-24 h-2 bg-blue-600 rounded-full"></div>
+                <div className="w-24 h-2 bg-orange-500 rounded-full"></div>
                 </div>
               {/* AI Assistant Toggle Icon */}
               <button
                 onClick={() => setIsChatOpen(!isChatOpen)}
-                className="p-2 bg-blue-600 hover:bg-blue-700 rounded-full transition-colors group"
+                className="p-2 bg-orange-500 hover:bg-orange-600 rounded-full transition-colors group"
                 title="Toggle AI Assistant"
               >
                 <Sparkles className="w-4 h-4 text-white group-hover:rotate-12 transition-transform" />
@@ -337,7 +351,13 @@ export default function SectionModalNew({
         {/* Body - Main Content with AI Sidebar */}
         <div className="flex-1 flex overflow-hidden bg-gray-50">
           {/* Main Content Area */}
-          <div className={`${isChatOpen ? 'flex-1' : 'w-full'} overflow-y-auto bg-white transition-all duration-300`}>
+          <div 
+            className={`${isChatOpen ? 'flex-1' : 'w-full'} overflow-y-auto bg-white transition-all duration-300`}
+            style={{ 
+              transform: 'translateZ(0)',
+              willChange: 'width'
+            }}
+          >
             {activeTab === 'content' ? (
               // Content Tab
               isLoadingContent ? (
@@ -375,14 +395,96 @@ export default function SectionModalNew({
               </div>
             ) : (
               <div className="relative overflow-hidden flex-grow h-full code-block-container max-w-full bg-white">
-                <div className="h-full w-full rounded-[inherit] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400">
+                <div 
+                  className="h-full w-full rounded-[inherit] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400"
+                  style={{ 
+                    transform: 'translateZ(0)',
+                    willChange: 'scroll-position',
+                    WebkitOverflowScrolling: 'touch'
+                  }}
+                >
                   <div className="w-full">
                     <div className="py-8 px-6 sm:px-12 md:px-16 lg:px-20 w-full max-w-6xl mx-auto overflow-visible">
                       {/* Main Content */}
                       <div className="prose prose-sm max-w-none w-full break-words overflow-visible mobile-lesson-content">
                         <ReactMarkdown 
+                          remarkPlugins={[remarkGfm]}
                           rehypePlugins={[rehypeHighlight]}
                           components={{
+                            // Table styling
+                            table: ({ node, ...props }) => (
+                              <div className="overflow-x-auto my-6">
+                                <table className="min-w-full border-2 border-gray-300 rounded-lg overflow-hidden" {...props} />
+                              </div>
+                            ),
+                            thead: ({ node, ...props }) => (
+                              <thead className="bg-gray-100" {...props} />
+                            ),
+                            tbody: ({ node, ...props }) => (
+                              <tbody className="divide-y divide-gray-200" {...props} />
+                            ),
+                            tr: ({ node, ...props }) => (
+                              <tr className="hover:bg-gray-50 transition-colors" {...props} />
+                            ),
+                            th: ({ node, ...props }) => (
+                              <th className="px-4 py-3 text-left text-sm font-bold text-orange-600 border-b-2 border-gray-300" {...props} />
+                            ),
+                            td: ({ node, ...props }) => (
+                              <td className="px-4 py-3 text-sm text-gray-900 border-r border-gray-200 last:border-r-0" {...props} />
+                            ),
+                            // Headings
+                            h1: ({ node, ...props }) => (
+                              <h1 className="text-3xl font-black text-gray-900 mt-8 mb-4 pb-2 border-b-2 border-orange-500" {...props} />
+                            ),
+                            h2: ({ node, ...props }) => (
+                              <h2 className="text-2xl font-bold text-gray-900 mt-6 mb-3 flex items-center gap-2 before:content-[''] before:w-1 before:h-6 before:bg-orange-500 before:rounded-full" {...props} />
+                            ),
+                            h3: ({ node, ...props }) => (
+                              <h3 className="text-xl font-bold text-orange-600 mt-5 mb-2" {...props} />
+                            ),
+                            h4: ({ node, ...props }) => (
+                              <h4 className="text-lg font-bold text-gray-900 mt-4 mb-2" {...props} />
+                            ),
+                            h5: ({ node, ...props }) => (
+                              <h5 className="text-base font-bold text-gray-900 mt-3 mb-1.5" {...props} />
+                            ),
+                            h6: ({ node, ...props }) => (
+                              <h6 className="text-sm font-bold text-gray-800 mt-2 mb-1" {...props} />
+                            ),
+                            // Lists
+                            ul: ({ node, ...props }) => (
+                              <ul className="list-disc list-inside space-y-2 my-4 text-gray-900 ml-4" {...props} />
+                            ),
+                            ol: ({ node, ...props }) => (
+                              <ol className="list-decimal list-inside space-y-2 my-4 text-gray-900 ml-4 font-medium" {...props} />
+                            ),
+                            li: ({ node, ...props }) => (
+                              <li className="text-gray-900 leading-relaxed font-semibold" {...props} />
+                            ),
+                            // Paragraphs
+                            p: ({ node, ...props }) => (
+                              <p className="text-gray-900 leading-relaxed my-3" {...props} />
+                            ),
+                            // Blockquotes
+                            blockquote: ({ node, ...props }) => (
+                              <blockquote className="border-l-4 border-orange-500 pl-4 py-2 my-4 bg-orange-50 italic text-gray-700" {...props} />
+                            ),
+                            // Strong/Bold
+                            strong: ({ node, ...props }) => (
+                              <strong className="font-bold text-gray-900" {...props} />
+                            ),
+                            // Emphasis/Italic
+                            em: ({ node, ...props }) => (
+                              <em className="italic text-gray-700" {...props} />
+                            ),
+                            // Links
+                            a: ({ node, ...props }) => (
+                              <a className="text-orange-600 hover:text-orange-700 underline" target="_blank" rel="noopener noreferrer" {...props} />
+                            ),
+                            // Horizontal Rule
+                            hr: ({ node, ...props }) => (
+                              <hr className="my-6 border-t-2 border-gray-300" {...props} />
+                            ),
                             pre: ({ node, children, ...props }) => {
                               const codeElement = children && Array.isArray(children) ? children[0] : null
                               const codeContent = codeElement && typeof codeElement === 'object' && 'props' in codeElement
@@ -449,38 +551,6 @@ export default function SectionModalNew({
                               }
                               return <code className={className} {...props}>{children}</code>
                             },
-                            h1: ({ node, children, ...props }) => (
-                              <h1 className="text-gray-900 no-underline font-bold text-3xl mt-8 mb-4 border-b pb-2" {...props}>
-                                {children}
-                              </h1>
-                            ),
-                            h2: ({ node, children, ...props }) => (
-                              <h2 className="text-gray-900 no-underline font-bold text-2xl mt-8 mb-3" {...props}>
-                                {children}
-                              </h2>
-                            ),
-                            h3: ({ node, children, ...props }) => (
-                              <h3 className="text-gray-900 no-underline font-bold text-xl mt-6 mb-3" {...props}>
-                                {children}
-                              </h3>
-                            ),
-                            h4: ({ node, children, ...props }) => (
-                              <h4 className="text-gray-900 no-underline font-bold text-lg mt-5 mb-2" {...props}>
-                                {children}
-                              </h4>
-                            ),
-                            p: ({ node, children, ...props }) => (
-                              <p className="my-4 leading-7" {...props}>{children}</p>
-                            ),
-                            ul: ({ node, children, ...props }) => (
-                              <ul className="list-disc pl-7 my-4 space-y-2" {...props}>{children}</ul>
-                            ),
-                            ol: ({ node, children, ...props }) => (
-                              <ol className="list-decimal pl-7 my-4 space-y-2" {...props}>{children}</ol>
-                            ),
-                            li: ({ node, children, ...props }) => (
-                              <li className="pl-1 mb-1" {...props}>{children}</li>
-                            ),
                           }}
                         >
                     {sectionContent || '# Nội dung đang được tạo...\n\nContent not available yet.'}
@@ -493,7 +563,14 @@ export default function SectionModalNew({
             )
             ) : (
               // Quiz Tab
-              <div className="h-full w-full overflow-y-auto">
+              <div 
+                className="h-full w-full overflow-y-auto"
+                style={{ 
+                  transform: 'translateZ(0)',
+                  willChange: 'scroll-position',
+                  WebkitOverflowScrolling: 'touch'
+                }}
+              >
                 <div className="py-8 px-6 sm:px-12 md:px-16 lg:px-20 w-full max-w-5xl mx-auto">
                   {isGeneratingQuiz ? (
                     <div className="flex flex-col items-center justify-center py-20">
@@ -687,58 +764,73 @@ export default function SectionModalNew({
 
           {/* AI Assistant Sidebar - Right side */}
           {isChatOpen && (
-            <div className="w-[420px] border-l-2 border-blue-100 bg-gradient-to-b from-white to-blue-50/30 flex flex-col animate-slide-in shadow-xl">
+            <div 
+              className="w-[420px] border-l border-zinc-800 bg-zinc-950 flex flex-col animate-slide-in shadow-xl"
+              style={{ 
+                transform: 'translateZ(0)',
+                willChange: 'transform'
+              }}
+            >
               {/* Chat Header */}
-              <div className="px-5 py-4 bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-600 flex items-center justify-between shadow-lg">
+              <div className="px-5 py-4 bg-gradient-to-r from-zinc-900 to-zinc-900 border-b border-zinc-800 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30">
-                    <Sparkles className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-white flex items-center gap-2">
                       AI Assistant
-                      <span className="px-2 py-0.5 bg-green-400 text-green-900 rounded-full text-[10px] font-bold">ONLINE</span>
+                      <span className="px-2 py-0.5 bg-green-500/20 text-green-400 border border-green-500/30 rounded-full text-[10px] font-bold">ONLINE</span>
                     </h3>
-                    <p className="text-xs text-blue-100 font-medium">Teach Pulsar • Always Ready</p>
+                    <p className="text-xs text-zinc-400 font-medium">Mr.Pulsar • Always Ready</p>
           </div>
         </div>
           <button
                   onClick={() => setIsChatOpen(false)}
-                  className="p-2 hover:bg-white/20 rounded-lg transition-all hover:rotate-90 duration-300"
+                  className="p-2 hover:bg-zinc-800 rounded-lg transition-all hover:rotate-90 duration-300"
                 >
-                  <X className="w-5 h-5 text-white" />
+                  <X className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
           </button>
         </div>
 
               {/* Suggestions */}
-              {chatHistory.length === 0 && (
-                <div className="px-5 py-4 border-b border-blue-100 bg-gradient-to-b from-blue-50 to-white">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></div>
-                    <p className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Quick Questions</p>
+              {chatHistory.length === 0 && showQuickQuestions && (
+                <div className="px-5 py-4 border-b border-zinc-800 bg-zinc-900">
+                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></div>
+                      <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Quick Questions</p>
+                    </div>
+                    <button
+                      onClick={() => setShowQuickQuestions(false)}
+                      className="p-1 hover:bg-zinc-800 rounded transition-colors"
+                      title="Hide quick questions"
+                    >
+                      <X className="w-3.5 h-3.5 text-zinc-500 hover:text-zinc-300" />
+                    </button>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <button 
                       onClick={() => setChatMessage('Explain this concept in more detail')}
-                      className="px-3 py-2 bg-white hover:bg-blue-50 hover:border-blue-300 border-2 border-gray-200 rounded-xl text-xs text-gray-700 transition-all hover:shadow-md font-medium"
+                      className="px-3 py-2 bg-zinc-800 hover:bg-orange-500/10 hover:border-orange-500/50 border border-zinc-700 rounded-lg text-xs text-zinc-300 hover:text-orange-400 transition-all font-medium"
                     >
                       💡 Explain in detail
                     </button>
                     <button 
                       onClick={() => setChatMessage('Give examples of practical applications')}
-                      className="px-3 py-2 bg-white hover:bg-blue-50 hover:border-blue-300 border-2 border-gray-200 rounded-xl text-xs text-gray-700 transition-all hover:shadow-md font-medium"
+                      className="px-3 py-2 bg-zinc-800 hover:bg-orange-500/10 hover:border-orange-500/50 border border-zinc-700 rounded-lg text-xs text-zinc-300 hover:text-orange-400 transition-all font-medium"
                     >
                       🎯 Practical examples
                     </button>
                     <button
                       onClick={() => setChatMessage('Summarize the main points')}
-                      className="px-3 py-2 bg-white hover:bg-blue-50 hover:border-blue-300 border-2 border-gray-200 rounded-xl text-xs text-gray-700 transition-all hover:shadow-md font-medium"
+                      className="px-3 py-2 bg-zinc-800 hover:bg-orange-500/10 hover:border-orange-500/50 border border-zinc-700 rounded-lg text-xs text-zinc-300 hover:text-orange-400 transition-all font-medium"
                     >
                       📝 Summarize
                     </button>
                     <button
                       onClick={() => setChatMessage('How to understand this topic deeper?')}
-                      className="px-3 py-2 bg-white hover:bg-blue-50 hover:border-blue-300 border-2 border-gray-200 rounded-xl text-xs text-gray-700 transition-all hover:shadow-md font-medium"
+                      className="px-3 py-2 bg-zinc-800 hover:bg-orange-500/10 hover:border-orange-500/50 border border-zinc-700 rounded-lg text-xs text-zinc-300 hover:text-orange-400 transition-all font-medium"
                     >
                       🚀 Go deeper
                     </button>
@@ -747,39 +839,46 @@ export default function SectionModalNew({
               )}
 
                 {/* Chat Messages */}
-              <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gradient-to-b from-gray-50 to-white">
+              <div 
+                className="flex-1 overflow-y-auto p-5 space-y-4 bg-zinc-950"
+                style={{ 
+                  transform: 'translateZ(0)',
+                  willChange: 'scroll-position',
+                  WebkitOverflowScrolling: 'touch'
+                }}
+              >
                   {chatHistory.length === 0 ? (
                   <div className="text-center py-16">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl">
-                      <Sparkles className="w-10 h-10 text-white animate-pulse" />
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
+                      <Sparkles className="w-10 h-10 text-orange-500 animate-pulse" />
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">How can I help you?</h3>
-                    <p className="text-sm text-gray-500 max-w-xs mx-auto">Ask me anything about this lesson and I'll explain it in detail!</p>
+                    <h3 className="text-lg font-bold text-white mb-2">How can I help you?</h3>
+                    <p className="text-sm text-zinc-400 max-w-xs mx-auto">Ask me anything about this lesson and I'll explain it in detail!</p>
                     </div>
                   ) : (
                     <>
                       {chatHistory.map((msg, idx) => (
                       <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}>
                         {msg.role === 'assistant' && (
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mr-2 shadow-md flex-shrink-0">
-                            <Sparkles className="w-4 h-4 text-white" />
+                          <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center mr-2 flex-shrink-0">
+                            <Sparkles className="w-4 h-4 text-orange-500" />
                           </div>
                         )}
-                        <div className={`max-w-[80%] rounded-2xl px-4 py-3 shadow-sm ${
+                        <div className={`max-w-[80%] rounded-xl px-4 py-3 ${
                             msg.role === 'user'
-                            ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-blue-500/20'
-                            : 'bg-white border-2 border-gray-100 text-gray-800 shadow-gray-200/50'
+                            ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white'
+                            : 'bg-zinc-900 border border-zinc-800 text-zinc-100'
                           }`}>
                             {msg.role === 'user' ? (
                             <p className="text-sm leading-relaxed">{msg.content}</p>
                             ) : (
-                            <div className="prose prose-sm max-w-none prose-p:my-1 prose-p:leading-relaxed prose-headings:text-gray-900 prose-strong:text-blue-600 prose-code:text-blue-600 prose-code:bg-blue-50 prose-code:px-1 prose-code:rounded">
-                                <ReactMarkdown>{msg.content}</ReactMarkdown>
+                            <div className="prose prose-sm max-w-none prose-p:my-1 prose-p:leading-relaxed prose-headings:text-white prose-strong:text-orange-400 prose-code:text-orange-400 prose-code:bg-orange-500/10 prose-code:px-1 prose-code:rounded">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
                               </div>
                             )}
                         </div>
                         {msg.role === 'user' && (
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center ml-2 shadow-md flex-shrink-0">
+                          <div className="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center ml-2 flex-shrink-0">
                             <span className="text-white text-sm font-bold">U</span>
                           </div>
                         )}
@@ -787,15 +886,15 @@ export default function SectionModalNew({
                       ))}
                       {isChatLoading && (
                       <div className="flex justify-start animate-in fade-in">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mr-2 shadow-md">
-                          <Sparkles className="w-4 h-4 text-white" />
+                        <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center mr-2">
+                          <Sparkles className="w-4 h-4 text-orange-500" />
                         </div>
-                        <div className="bg-white border-2 border-gray-100 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
-                          <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+                        <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 flex items-center gap-3">
+                          <Loader2 className="w-4 h-4 animate-spin text-orange-500" />
                           <div className="flex gap-1">
-                            <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
-                            <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
-                            <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+                            <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+                            <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+                            <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
                           </div>
                           </div>
                         </div>
@@ -806,7 +905,7 @@ export default function SectionModalNew({
                 </div>
 
                 {/* Chat Input */}
-              <div className="sticky bottom-0 backdrop-blur-sm bg-white/90 border-t border-blue-100 rounded-lg p-3 relative z-10">
+              <div className="sticky bottom-0 backdrop-blur-sm bg-zinc-900/90 border-t border-zinc-800 rounded-lg p-3 relative z-10">
                 <div className="flex gap-2 items-end">
                   <div className="relative flex-grow">
                     <textarea
@@ -819,22 +918,22 @@ export default function SectionModalNew({
                         }
                       }}
                       placeholder="Type your question..."
-                      className="flex w-full px-3 text-sm placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[40px] max-h-32 py-2 pl-3 pr-8 rounded-xl shadow-sm bg-white border-2 transition-all duration-200 border-blue-200 hover:border-blue-300"
+                      className="flex w-full px-3 text-sm text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[40px] max-h-32 py-2 pl-3 pr-8 rounded-xl shadow-sm bg-zinc-800 border-2 transition-all duration-200 border-zinc-700 hover:border-orange-500/50"
                       rows={1}
                     />
                   </div>
                   <div className="flex flex-col items-center gap-1">
-                    <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-yellow-100/80 border border-yellow-200">
-                      <Zap className="h-3 w-3 text-yellow-600" />
-                      <span className="text-[10px] font-medium text-yellow-700">5</span>
+                    <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-yellow-500/20 border border-yellow-500/30">
+                      <Zap className="h-3 w-3 text-yellow-400" />
+                      <span className="text-[10px] font-medium text-yellow-300">5</span>
                     </div>
                     <button
                       onClick={handleSendChat}
                       disabled={!chatMessage.trim() || isChatLoading}
-                      className={`inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 w-8 rounded-full shadow-sm flex-shrink-0 p-0 transition-all duration-200 ${
+                      className={`inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 w-8 rounded-full shadow-sm flex-shrink-0 p-0 transition-all duration-200 ${
                         !chatMessage.trim() || isChatLoading 
-                          ? 'bg-gray-100 cursor-not-allowed' 
-                          : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
+                          ? 'bg-zinc-800 cursor-not-allowed' 
+                          : 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
                       }`}
                     >
                       <Send className="h-3.5 w-3.5 text-white" />

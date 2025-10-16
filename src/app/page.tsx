@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { Sparkles, Code, Brain, Zap, Users, Award, ArrowRight, Github, Linkedin, Mail } from 'lucide-react'
+import Image from 'next/image'
+import { Sparkles, Code, Brain, Zap, ArrowRight, Github, Linkedin, Mail } from 'lucide-react'
 import Link from 'next/link'
 
 // Lazy load heavy components
@@ -30,19 +31,22 @@ export default function Home() {
 
   const teamMembers = [
     {
-      icon: Users,
+      image: '/images/thebuilderteams/truongduongbaominh.png',
+      hoverImage: '/images/thebuilderteams/hover/truongduongbaominhhover.png',
       name: 'Trương Dương Bảo Minh',
       role: 'Frontend Developer and AI Engineer',
-      quote: '"Building PulsarTeam has been an incredible journey. Our AI-powered platform is transforming how people learn, making education accessible and personalized for everyone."'
+      quote: '"We\'re revolutionizing education with AI, making personalized learning accessible to everyone."'
     },
     {
-      icon: Brain,
+      image: '/images/thebuilderteams/cuthanhcam.png',
+      hoverImage: '/images/thebuilderteams/hover/cuthanhcamhover.png',
       name: 'Cù Thanh Cầm',
       role: 'Project Manager and Backend Developer',
-      quote: '"PulsarTeam’s mission is to redefine education through cutting-edge AI. We’re empowering learners worldwide, delivering a personalized experience for all."'
+      quote: `"PulsarTeam's mission is to redefine education through cutting-edge AI. We're empowering learners worldwide, delivering a personalized experience for all."`
     },
     {
-      icon: Award,
+      image: '/images/thebuilderteams/trantuananh.png',
+      hoverImage: '/images/thebuilderteams/hover/trantuananhhover.png',
       name: 'Trần Tuấn Anh',
       role: 'Backend Developer and Data Analyst',
       quote: '"At PulsarTeam, we shaping the future of learning with AI innovation, creating a more inclusive, personalized, and accessible educational experience for everyone."'
@@ -228,12 +232,23 @@ export default function Home() {
           {/* Featured Testimonial */}
           <div className="relative mx-auto mb-12 max-w-[889px]">
             <div 
-              className="relative flex min-h-[300px] md:min-h-[400px] cursor-pointer flex-col justify-between overflow-hidden rounded-[13px] border border-white/10 text-left backdrop-blur-sm transition-all duration-300 hover:border-orange-500"
-              style={{
-                background: 'linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(44, 54, 58) 100%)',
-                height: '458px'
-              }}
+              className="group relative flex min-h-[300px] md:min-h-[400px] cursor-pointer flex-col justify-between overflow-hidden rounded-[13px] border border-white/30 text-left backdrop-blur-sm transition-all duration-300 hover:border-orange-500"
+              style={{ height: '458px' }}
             >
+              {/* Normal Gradient Background */}
+              <div 
+                className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
+                style={{ background: 'linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(44, 54, 58) 100%)' }}
+              ></div>
+              
+              {/* Hover Gradient Background (Orange tint) */}
+              <div 
+                className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                style={{ background: 'linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(80, 50, 30) 100%)' }}
+              ></div>
+              
+              {/* Content wrapper with relative positioning */}
+              <div className="relative z-10 flex flex-col justify-between h-full">
               {/* Quote Content */}
               <div className="flex flex-1 items-center justify-center pt-5 pb-2.5 md:py-10">
                 <div 
@@ -248,11 +263,23 @@ export default function Home() {
               <div className="flex flex-col gap-4 px-4 pb-4 md:flex-row md:items-center md:justify-between md:px-16 md:pb-12">
                 <div className="flex items-center gap-4">
                   <div className="border-frame border-gold h-16 w-16 rounded-xl p-1">
-                    <div className="h-full w-full rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center transition-all duration-300">
-                      {(() => {
-                        const Icon = teamMembers[selectedMember].icon;
-                        return <Icon className="w-8 h-8 text-white" />;
-                      })()}
+                    <div className="relative h-full w-full rounded-lg overflow-hidden bg-zinc-800">
+                      {/* Normal Image */}
+                      <Image 
+                        src={teamMembers[selectedMember].image}
+                        alt={teamMembers[selectedMember].name}
+                        fill
+                        className="object-cover transition-opacity duration-300 group-hover:opacity-0"
+                        sizes="64px"
+                      />
+                      {/* Hover Image */}
+                      <Image 
+                        src={teamMembers[selectedMember].hoverImage}
+                        alt={`${teamMembers[selectedMember].name} hover`}
+                        fill
+                        className="object-cover transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                        sizes="64px"
+                      />
                     </div>
                   </div>
                   <div className="min-w-0 flex-1 text-left">
@@ -268,6 +295,7 @@ export default function Home() {
                   <div className="text-2xl font-black text-orange-500">PulsarTeam</div>
                 </div>
               </div>
+              </div>
                             </div>
                           </div>
 
@@ -276,14 +304,13 @@ export default function Home() {
             <div className="flex flex-wrap justify-center gap-2">
               {/* 3 Team Members */}
               {teamMembers.map((member, index) => {
-                const Icon = member.icon;
                 const isActive = selectedMember === index;
                 
                 return (
                   <button 
                     key={index}
                     onClick={() => setSelectedMember(index)}
-                    className="group relative h-[44px] w-[44px] md:h-[45px] md:w-[45px] transition-all duration-200 hover:scale-110 focus:outline-none"
+                    className="group relative h-[44px] w-[44px] md:h-[45px] md:w-[45px] transition-all duration-200 hover:scale-110 focus:outline-none overflow-hidden"
                     title={member.name}
                   >
                     {/* Corner dots */}
@@ -294,10 +321,20 @@ export default function Home() {
                     
                     {/* Avatar content */}
                     <div 
-                      className="h-full w-full transition-all duration-200 group-hover:border-orange-500 flex items-center justify-center bg-zinc-800"
-                      style={{ border: isActive ? '1px solid rgb(242, 188, 140)' : '0.5px solid transparent' }}
+                      className="relative h-full w-full transition-all duration-200 bg-zinc-800 overflow-hidden"
+                      style={{ 
+                        border: isActive 
+                          ? '2px solid rgb(249, 115, 22)' // Active: cam
+                          : '1px solid rgb(255, 255, 255)' // Non-active: trắng
+                      }}
                     >
-                      <Icon className={`w-6 h-6 transition-colors duration-200 ${isActive ? 'text-orange-500' : 'text-zinc-400 group-hover:text-orange-500'}`} />
+                      <Image 
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                        sizes="45px"
+                      />
                           </div>
                   </button>
                 );
@@ -332,7 +369,7 @@ export default function Home() {
                         
                 <p className="text-lg sm:text-xl text-zinc-400 mb-8 leading-relaxed max-w-2xl">
                   Join thousands of learners using AI to master new skills. 
-                  No credit card required. Start learning in seconds.
+                  Get 500 free credits to start. Begin your journey in seconds.
                 </p>
                 
                 {/* CTA Buttons */}
@@ -354,16 +391,16 @@ export default function Home() {
                 {/* Stats */}
                 <div className="flex flex-wrap items-center gap-6 mt-10 pt-10 border-t border-zinc-800">
                   <div className="flex items-center gap-2 text-sm text-zinc-400">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span>No Credit Card</span>
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span className="font-semibold text-white">500 Free Credits</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-zinc-400">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span>Free Forever</span>
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span className="font-semibold text-white">Instant Credit Delivery</span>
                                           </div>
                   <div className="flex items-center gap-2 text-sm text-zinc-400">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span>Unlimited Courses</span>
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span className="font-semibold text-white">AI-Powered Learning</span>
                                             </div>
                                           </div>
                                         </div>
