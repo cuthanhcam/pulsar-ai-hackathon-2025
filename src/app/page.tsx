@@ -35,7 +35,7 @@ export default function Home() {
       hoverImage: '/images/thebuilderteams/hover/truongduongbaominhhover.png',
       name: 'Trương Dương Bảo Minh',
       role: 'Frontend Developer and AI Engineer',
-      quote: '"Building PulsarTeam has been an incredible journey. Our AI-powered platform is transforming how people learn, making education accessible and personalized for everyone."'
+      quote: '"We\'re revolutionizing education with AI, making personalized learning accessible to everyone."'
     },
     {
       image: '/images/thebuilderteams/cuthanhcam.png',
@@ -232,12 +232,23 @@ export default function Home() {
           {/* Featured Testimonial */}
           <div className="relative mx-auto mb-12 max-w-[889px]">
             <div 
-              className="group relative flex min-h-[300px] md:min-h-[400px] cursor-pointer flex-col justify-between overflow-hidden rounded-[13px] border border-white/10 text-left backdrop-blur-sm transition-all duration-300 hover:border-orange-500"
-              style={{
-                background: 'linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(44, 54, 58) 100%)',
-                height: '458px'
-              }}
+              className="group relative flex min-h-[300px] md:min-h-[400px] cursor-pointer flex-col justify-between overflow-hidden rounded-[13px] border border-white/30 text-left backdrop-blur-sm transition-all duration-300 hover:border-orange-500"
+              style={{ height: '458px' }}
             >
+              {/* Normal Gradient Background */}
+              <div 
+                className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
+                style={{ background: 'linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(44, 54, 58) 100%)' }}
+              ></div>
+              
+              {/* Hover Gradient Background (Orange tint) */}
+              <div 
+                className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                style={{ background: 'linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(80, 50, 30) 100%)' }}
+              ></div>
+              
+              {/* Content wrapper with relative positioning */}
+              <div className="relative z-10 flex flex-col justify-between h-full">
               {/* Quote Content */}
               <div className="flex flex-1 items-center justify-center pt-5 pb-2.5 md:py-10">
                 <div 
@@ -283,6 +294,7 @@ export default function Home() {
                 <div className="flex items-center">
                   <div className="text-2xl font-black text-orange-500">PulsarTeam</div>
                 </div>
+              </div>
               </div>
                             </div>
                           </div>
