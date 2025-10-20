@@ -12,6 +12,10 @@ interface Message {
  * POST /api/chat/stream
  * Stream chat responses in real-time using Server-Sent Events
  */
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)

@@ -8,6 +8,10 @@ import { generateContent, parseJSONResponse, CREDITS } from '@/lib/gemini'
  * POST /api/mindmap/generate
  * Generate a mindmap structure from lesson content using Mermaid syntax
  */
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)

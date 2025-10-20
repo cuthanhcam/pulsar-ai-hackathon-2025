@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
+import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
   try {
@@ -16,28 +19,28 @@ export async function POST(req: Request) {
 
     const { geminiApiKey } = await req.json()
 
-    if (!geminiApiKey || !geminiApiKey.trim()) {
+    if (!geminiApiKey || geminiApiKey.trim().length === 0) {
       return NextResponse.json(
-        { error: 'API Key is required' },
+        { error: 'API key is required' },
         { status: 400 }
       )
     }
 
-    // Update user's API key
+    // Update user's Gemini API key
     await prisma.user.update({
       where: { id: session.user.id },
       data: { geminiApiKey: geminiApiKey.trim() }
     })
 
-    return NextResponse.json({ 
-      success: true,
-      message: 'API Key updated successfully' 
+    return NextResponse.json({
+      message: 'API key updated successfully'
     })
-
   } catch (error) {
+    console.error('Error updating API key:', error)
     return NextResponse.json(
-      { error: 'Failed to update API Key', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: 'Failed to update API key' },
       { status: 500 }
     )
   }
 }
+
