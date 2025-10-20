@@ -6,6 +6,10 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import { GEMINI_MODEL_PRIMARY } from '@/lib/gemini'
 
 // GET: Fetch section content
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function GET(
   req: Request,
   { params }: { params: { id: string } }

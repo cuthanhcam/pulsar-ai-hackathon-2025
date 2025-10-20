@@ -7,6 +7,10 @@ import { prisma } from '@/lib/prisma'
  * GET /api/progress
  * Get user's learning progress and statistics
  */
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions)

@@ -414,7 +414,11 @@ export default function DynamicCoursePage() {
           }}
           section={selectedSection}
           module={selectedModule}
-          course={course}
+          course={{
+            id: course.id,
+            title: course.title,
+            difficulty: course.difficulty
+          }}
           onSectionComplete={handleSectionComplete}
         />
       )}

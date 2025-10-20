@@ -9,12 +9,13 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 // Get API key from environment (server-side only)
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 
-if (!GEMINI_API_KEY && process.env.NODE_ENV === 'production') {
-  throw new Error('GEMINI_API_KEY is not set in environment variables')
+// Log warning if API key is missing (don't throw during build)
+if (!GEMINI_API_KEY && typeof window === 'undefined') {
+  console.warn('⚠️  GEMINI_API_KEY is not set. Gemini features will not work.')
 }
 
-// Initialize Gemini client
-export const genAI = new GoogleGenerativeAI(GEMINI_API_KEY || '')
+// Initialize Gemini client (will be validated when actually used)
+export const genAI = new GoogleGenerativeAI(GEMINI_API_KEY || 'placeholder')
 
 // Model configurations - Using latest models
 export const GEMINI_MODEL_PRIMARY = 'gemini-2.5-flash'
@@ -26,6 +27,9 @@ export const GEMINI_MODEL_FALLBACK = 'gemini-2.5-flash'
  * @returns Generative model instance
  */
 export function getGeminiModel(modelName: string = GEMINI_MODEL_PRIMARY) {
+  if (!GEMINI_API_KEY) {
+    throw new Error('GEMINI_API_KEY is not configured. Please add it to your environment variables.')
+  }
   return genAI.getGenerativeModel({ model: modelName })
 }
 

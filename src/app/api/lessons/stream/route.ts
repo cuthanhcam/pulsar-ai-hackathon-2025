@@ -7,6 +7,10 @@ import { streamGenerateContent, CREDITS } from '@/lib/gemini'
  * POST /api/lessons/stream
  * Stream lesson generation in real-time using Server-Sent Events
  */
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)
