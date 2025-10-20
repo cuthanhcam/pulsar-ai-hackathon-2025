@@ -71,7 +71,10 @@ export async function GET() {
         createdAt: lesson.createdAt,
         totalSections,
         completedSections,
-        completionPercentage
+        completionPercentage,
+        _count: {
+          modules: lesson.modules.length
+        }
       }
     })
 

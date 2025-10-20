@@ -1,6 +1,6 @@
 'use client'
 
-import { X, Clock, Loader2, BookOpen, Send, Sparkles, MessageCircle, CheckCircle, Trophy, Zap, Copy, Check, Minimize2, Maximize2, Bot, ThumbsUp, TrendingUp } from 'lucide-react'
+import { X, Clock, Loader2, BookOpen, Send, Sparkles, MessageCircle, CheckCircle, Trophy, Zap, Copy, Check, Minimize2, Maximize2, Bot, ThumbsUp, TrendingUp, Trash2 } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
@@ -19,6 +19,7 @@ interface SectionModalProps {
     title: string
   }
   course: {
+    id?: string
     title: string
     difficulty?: string
   }
@@ -81,6 +82,20 @@ export default function SectionModalNew({
       loadSectionContent()
       // Check if section is already completed
       setIsCompleted((section as any).completed || false)
+      
+      // Load chat history from localStorage for this section
+      const savedChatHistory = localStorage.getItem(`chat_history_${section.id}`)
+      if (savedChatHistory) {
+        try {
+          const parsed = JSON.parse(savedChatHistory)
+          setChatHistory(parsed)
+        } catch (e) {
+          console.error('Failed to parse saved chat history:', e)
+        }
+      } else {
+        // Reset chat history if no saved history
+        setChatHistory([])
+      }
     }
   }, [isOpen, section.id])
 
@@ -89,6 +104,22 @@ export default function SectionModalNew({
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [chatHistory, isChatOpen, isChatMinimized])
+  
+  // Save chat history to localStorage whenever it changes
+  useEffect(() => {
+    if (isOpen && section.id && chatHistory.length > 0) {
+      localStorage.setItem(`chat_history_${section.id}`, JSON.stringify(chatHistory))
+    }
+  }, [chatHistory, section.id, isOpen])
+  
+  // Clear chat history
+  const handleClearChatHistory = () => {
+    if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử chat của section này?')) {
+      setChatHistory([])
+      localStorage.removeItem(`chat_history_${section.id}`)
+      setShowQuickQuestions(true)
+    }
+  }
   
   // Handle text selection
   const handleTextSelection = () => {
@@ -338,8 +369,34 @@ export default function SectionModalNew({
     }
   }
 
-  const handleSubmitQuiz = () => {
+  const handleSubmitQuiz = async () => {
     setShowResults(true)
+    
+    // Save quiz result to database
+    try {
+      const score = calculateScore()
+      
+      const response = await fetch('/api/quiz/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lessonId: course.id || '',
+          sectionId: section.id,
+          sectionTitle: section.title,
+          questions: quiz,
+          answers: selectedAnswers,
+          score
+        })
+      })
+
+      if (response.ok) {
+        console.log('Quiz result saved successfully')
+      } else {
+        console.error('Failed to save quiz result')
+      }
+    } catch (error) {
+      console.error('Error saving quiz result:', error)
+    }
   }
 
   const calculateScore = () => {
@@ -377,7 +434,7 @@ export default function SectionModalNew({
               <span className="hover:text-orange-600 cursor-pointer transition-colors">{course.title}</span>
               <span className="text-gray-400 font-normal">→</span>
               <span className="hover:text-orange-600 cursor-pointer transition-colors">{module.title}</span>
-            </div>
+              </div>
             <button
               onClick={onClose}
               className="p-1 hover:bg-gray-100 rounded transition-colors"
@@ -395,17 +452,17 @@ export default function SectionModalNew({
                   </div>
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1.5 text-sm text-gray-600">
-                <Clock className="w-4 h-4" />
+                  <Clock className="w-4 h-4" />
                 {section.duration || 9} Minutes
-              </span>
+                </span>
               <span className="flex items-center gap-1.5 text-sm text-gray-600">
                 <BookOpen className="w-4 h-4" />
-                {course.difficulty || 'Intermediate'}
-              </span>
+                  {course.difficulty || 'Intermediate'}
+                </span>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">100%</span>
                 <div className="w-24 h-2 bg-orange-500 rounded-full"></div>
-                </div>
+              </div>
               {/* AI Assistant Toggle Icon */}
               <button
                 onClick={() => setIsChatOpen(!isChatOpen)}
@@ -419,7 +476,7 @@ export default function SectionModalNew({
 
           {/* Tabs - Segmented Control Style */}
           <div className="inline-flex bg-gray-100 rounded-lg p-1 gap-1">
-            <button 
+            <button
               onClick={() => setActiveTab('content')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 activeTab === 'content' 
@@ -486,13 +543,13 @@ export default function SectionModalNew({
                 <div className="bg-red-50 border border-red-200 rounded-xl p-8 max-w-md text-center">
                   <div className="text-red-600 text-lg font-semibold mb-2">Không thể tải nội dung</div>
                   <p className="text-red-500 text-sm mb-4">{error}</p>
-                  <button
+                    <button
                     onClick={loadSectionContent}
                     className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
-                  >
+                    >
                     Thử lại
-                  </button>
-                </div>
+                    </button>
+                  </div>
               </div>
             ) : (
               <div className="relative overflow-hidden flex-grow h-full code-block-container max-w-full bg-white">
@@ -599,7 +656,7 @@ export default function SectionModalNew({
                               
                               return (
                                 <div className="relative w-full max-w-full my-4">
-                                  <button
+                    <button
                                     onClick={() => handleCopyCode(codeContent, codeId)}
                                     className="absolute right-2 top-2 p-1.5 rounded-md bg-gray-800/30 hover:bg-gray-800/50 text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 z-10"
                                     aria-label="Copy code"
@@ -608,8 +665,8 @@ export default function SectionModalNew({
                                       <Check className="w-4 h-4" />
                                     ) : (
                                       <Copy className="w-4 h-4" />
-                                    )}
-                                  </button>
+                      )}
+                    </button>
                                   <div className="w-full max-w-full overflow-hidden">
                                     <pre 
                                       className="rounded-md !mt-0 !mb-0"
@@ -707,7 +764,7 @@ export default function SectionModalNew({
                         <h2 className="text-2xl font-bold text-gray-900 mb-2">Knowledge Quiz</h2>
                         <p className="text-gray-600">Test hiểu kiến thức về: <span className="font-semibold text-blue-600">{section.title}</span></p>
                         <p className="text-sm text-gray-500 mt-2">{quiz.length} câu hỏi • {quiz.length * 2} phút</p>
-                      </div>
+                </div>
 
                       {/* Questions */}
                       <div className="space-y-6">
@@ -727,7 +784,7 @@ export default function SectionModalNew({
                                 const showResult = showResults
 
                                 return (
-                                  <button
+                              <button
                                     key={oIndex}
                                     onClick={() => {
                                       if (!showResults) {
@@ -737,7 +794,7 @@ export default function SectionModalNew({
                                         }))
                                       }
                                     }}
-                                    disabled={showResults}
+                                disabled={showResults}
                                     className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
                                       showResult
                                         ? isCorrect
@@ -774,10 +831,10 @@ export default function SectionModalNew({
                                         <X className="w-5 h-5 text-red-500" />
                                       )}
                                     </div>
-                                  </button>
+                              </button>
                                 )
                               })}
-                            </div>
+                          </div>
 
                             {/* Explanation */}
                             {showResults && (
@@ -785,11 +842,11 @@ export default function SectionModalNew({
                                 <p className="text-sm font-semibold text-blue-900 mb-1">💡 Giải thích:</p>
                                 <p className="text-sm text-blue-800">{question.explanation}</p>
                               </div>
-                            )}
-                          </div>
-                        ))}
+                          )}
+                        </div>
+                      ))}
                       </div>
-
+                      
                       {/* Submit/Results */}
                       {!showResults ? (
                         <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl p-6">
@@ -798,19 +855,19 @@ export default function SectionModalNew({
                               Đã trả lời: <span className="font-bold text-gray-900">{Object.keys(selectedAnswers).length}/{quiz.length}</span> câu
                             </p>
                           </div>
-                          <button
-                            onClick={handleSubmitQuiz}
-                            disabled={Object.keys(selectedAnswers).length !== quiz.length}
+                        <button
+                          onClick={handleSubmitQuiz}
+                          disabled={Object.keys(selectedAnswers).length !== quiz.length}
                             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg transition-all font-semibold shadow-lg"
-                          >
-                            Nộp bài
-                          </button>
+                        >
+                          Nộp bài
+                        </button>
                         </div>
                       ) : (
                         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8 text-center">
                           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 mb-4">
                             <span className="text-3xl font-bold text-white">{calculateScore()}%</span>
-                          </div>
+                        </div>
                           <div className="flex items-center justify-center gap-3 mb-2">
                             {calculateScore() >= 80 ? (
                               <>
@@ -825,23 +882,23 @@ export default function SectionModalNew({
                                   <ThumbsUp className="w-6 h-6 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-bold text-gray-900">Tốt!</h3>
-                              </>
-                            ) : (
+                    </>
+                  ) : (
                               <>
                                 <div className="p-3 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full">
                                   <TrendingUp className="w-6 h-6 text-white" />
-                                </div>
+                    </div>
                                 <h3 className="text-2xl font-bold text-gray-900">Cố gắng thêm!</h3>
                               </>
-                            )}
-                          </div>
+                  )}
+                </div>
                           <p className="text-gray-600 mb-6">
                             Bạn trả lời đúng <span className="font-bold text-blue-600">
                               {quiz.filter(q => selectedAnswers[q.id] === q.correctAnswer).length}/{quiz.length}
                             </span> câu
                           </p>
                           <div className="flex gap-3 justify-center">
-                            <button
+              <button
                               onClick={() => {
                                 setShowResults(false)
                                 setSelectedAnswers({})
@@ -849,8 +906,8 @@ export default function SectionModalNew({
                               className="px-6 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                             >
                               Làm lại
-                            </button>
-                            <button
+              </button>
+                  <button
                               onClick={() => {
                                 setQuiz(null)
                                 setShowResults(false)
@@ -860,16 +917,16 @@ export default function SectionModalNew({
                               className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all font-semibold shadow-lg"
                             >
                               Quiz mới (5 credits)
-                            </button>
-                          </div>
+                  </button>
+                </div>
                         </div>
                       )}
-                    </div>
-                  ) : (
+              </div>
+            ) : (
                     <div className="flex flex-col items-center justify-center py-20 text-center">
                       <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-6">
                         <Trophy className="w-10 h-10 text-white" />
-                      </div>
+                </div>
                       <h3 className="text-2xl font-bold text-gray-900 mb-3">Sẵn sàng kiểm tra kiến thức?</h3>
                       <p className="text-gray-600 mb-6 max-w-md">
                         AI sẽ tạo quiz dựa trên nội dung bài học này để giúp bạn củng cố kiến thức
@@ -881,12 +938,12 @@ export default function SectionModalNew({
                         <Sparkles className="w-5 h-5" />
                         Tạo Quiz (5 credits)
                       </button>
-                    </div>
-                  )}
-                </div>
               </div>
             )}
           </div>
+              </div>
+            )}
+        </div>
 
           {/* AI Assistant Sidebar - Right side */}
           {isChatOpen && (
@@ -911,12 +968,25 @@ export default function SectionModalNew({
                     <p className="text-xs text-zinc-400 font-medium">Mr.Pulsar • Always Ready</p>
           </div>
         </div>
+                <div className="flex items-center gap-2">
+                  {/* Clear History Button - Only show if there's chat history */}
+                  {chatHistory.length > 0 && (
+          <button
+                      onClick={handleClearChatHistory}
+                      className="p-2 hover:bg-zinc-800 rounded-lg transition-all group"
+                      title="Xóa lịch sử chat"
+          >
+                      <Trash2 className="w-4 h-4 text-zinc-400 hover:text-red-400 transition-colors group-hover:scale-110" />
+          </button>
+                  )}
+                  {/* Close Button */}
           <button
                   onClick={() => setIsChatOpen(false)}
                   className="p-2 hover:bg-zinc-800 rounded-lg transition-all hover:rotate-90 duration-300"
-                >
+          >
                   <X className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
           </button>
+                </div>
         </div>
 
               {/* Suggestions */}
@@ -927,22 +997,22 @@ export default function SectionModalNew({
                       <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></div>
                       <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Quick Questions</p>
                     </div>
-                    <button
+              <button
                       onClick={() => setShowQuickQuestions(false)}
                       className="p-1 hover:bg-zinc-800 rounded transition-colors"
                       title="Hide quick questions"
-                    >
+              >
                       <X className="w-3.5 h-3.5 text-zinc-500 hover:text-zinc-300" />
-                    </button>
-                  </div>
+              </button>
+                    </div>
                   <div className="flex flex-wrap gap-2">
-                    <button 
+                    <button
                       onClick={() => setChatMessage('Explain this concept in more detail')}
                       className="px-3 py-2 bg-zinc-800 hover:bg-orange-500/10 hover:border-orange-500/50 border border-zinc-700 rounded-lg text-xs text-zinc-300 hover:text-orange-400 transition-all font-medium"
                     >
                       💡 Explain in detail
                     </button>
-                    <button 
+                    <button
                       onClick={() => setChatMessage('Give examples of practical applications')}
                       className="px-3 py-2 bg-zinc-800 hover:bg-orange-500/10 hover:border-orange-500/50 border border-zinc-700 rounded-lg text-xs text-zinc-300 hover:text-orange-400 transition-all font-medium"
                     >
@@ -1002,7 +1072,7 @@ export default function SectionModalNew({
                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
                               </div>
                             )}
-                        </div>
+                          </div>
                         {msg.role === 'user' && (
                           <div className="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center ml-2 flex-shrink-0">
                             <span className="text-white text-sm font-bold">U</span>
@@ -1067,8 +1137,8 @@ export default function SectionModalNew({
                   </div>
                 </div>
               </div>
-            </div>
-            )}
+          </div>
+        )}
           </div>
 
         {/* Footer */}
@@ -1109,7 +1179,7 @@ export default function SectionModalNew({
               </>
             )}
           </button>
-        </div>
+      </div>
 
       </div>
       

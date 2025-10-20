@@ -7,6 +7,9 @@ import { prisma } from '@/lib/prisma'
 let sessionCache: Map<string, { data: any, timestamp: number }> = new Map()
 const CACHE_TTL = 60000 // 60 seconds
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
@@ -35,7 +38,8 @@ export async function GET() {
         credits: true,
         name: true,
         email: true,
-        phone: true
+        phone: true,
+        role: true
       }
     })
 
@@ -46,19 +50,32 @@ export async function GET() {
       )
     }
 
+    // 🔒 Security: Mask sensitive data in response
+    const maskEmail = (email: string) => {
+      const [local, domain] = email.split('@')
+      const maskedLocal = local.length > 3 
+        ? local.slice(0, 3) + '*'.repeat(local.length - 3)
+        : local.slice(0, 1) + '*'.repeat(local.length - 1)
+      return `${maskedLocal}@${domain}`
+    }
+
     const data = {
       user: {
-        geminiApiKey: user.geminiApiKey || null,
+        // 🔒 NEVER send API keys to client
+        // geminiApiKey: REMOVED for security
+        hasApiKey: !!user.geminiApiKey, // Only send boolean flag
         credits: Number(user.credits),
         name: user.name,
-        email: user.email,
-        phone: user.phone
+        email: maskEmail(user.email), // 🔒 Masked email
+        phone: user.phone,
+        role: user.role
       },
-      // Keep backward compatibility
-      geminiApiKey: user.geminiApiKey || null,
+      // Keep backward compatibility (but secured)
+      hasApiKey: !!user.geminiApiKey,
       credits: Number(user.credits),
       name: user.name,
-      email: user.email
+      email: maskEmail(user.email), // 🔒 Masked email
+      role: user.role
     }
 
     // Update cache
