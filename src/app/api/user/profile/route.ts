@@ -31,7 +31,7 @@ export async function GET() {
     }
 
     // Single optimized query to get both API key and credits
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: { 
         geminiApiKey: true,
@@ -43,11 +43,57 @@ export async function GET() {
       }
     })
 
+    // Auto-create user if not exists
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      )
+      console.log('[Profile API] User not found, auto-creating:', session.user.id)
+      try {
+        const userEmail = session.user.email || `user-${session.user.id}@app.local`
+        
+        // Check if email already exists
+        const existingByEmail = await prisma.user.findUnique({
+          where: { email: userEmail },
+          select: { 
+            geminiApiKey: true,
+            credits: true,
+            name: true,
+            email: true,
+            phone: true,
+            role: true
+          }
+        })
+
+        if (existingByEmail) {
+          console.log('[Profile API] Using existing user with same email')
+          user = existingByEmail
+        } else {
+          // Create new user
+          user = await prisma.user.create({
+            data: {
+              id: session.user.id,
+              email: userEmail,
+              name: session.user.name || 'User',
+              password: '',
+              role: 'user',
+              credits: 500
+            },
+            select: { 
+              geminiApiKey: true,
+              credits: true,
+              name: true,
+              email: true,
+              phone: true,
+              role: true
+            }
+          })
+          console.log('[Profile API] ✅ User auto-created successfully')
+        }
+      } catch (createError) {
+        console.error('[Profile API] ❌ Failed to auto-create user:', createError)
+        return NextResponse.json(
+          { error: 'User setup failed' },
+          { status: 500 }
+        )
+      }
     }
 
     // 🔒 Security: Mask sensitive data in response

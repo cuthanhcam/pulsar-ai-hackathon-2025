@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getApiKey } from '@/lib/encryption'
 
 // Force dynamic rendering (disable static optimization)
 export const dynamic = 'force-dynamic'
@@ -20,9 +21,14 @@ export async function GET(req: NextRequest) {
       select: { geminiApiKey: true }
     })
 
-    const apiKey = user?.geminiApiKey
+    // 🔒 Get user's API key (auto-decrypt if encrypted, or use as-is if plain text)
+    if (!user?.geminiApiKey) {
+      return NextResponse.json({ error: 'Gemini API Key not configured. Please add it in Settings.' }, { status: 400 })
+    }
+
+    const apiKey = await getApiKey(user.geminiApiKey)
     if (!apiKey) {
-      return NextResponse.json({ error: 'No API key found' }, { status: 400 })
+      return NextResponse.json({ error: 'Failed to retrieve API key' }, { status: 400 })
     }
 
     // Call Google AI API to list models

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { getApiKey } from '@/lib/encryption'
 
 const QUIZ_CREDIT_COST = 5
 
@@ -52,13 +53,20 @@ export async function POST(req: Request) {
       )
     }
 
-    // Get API key
-    const apiKey = user.geminiApiKey || process.env.GEMINI_API_KEY
-
-    if (!apiKey || apiKey === 'your-gemini-api-key-here') {
-      console.log('[Quiz API] ❌ No API key')
+    // 🔒 Get user's API key (auto-decrypt if encrypted, or use as-is if plain text)
+    if (!user.geminiApiKey) {
+      console.log('[Quiz API] ❌ No API key found')
       return NextResponse.json(
-        { error: 'Gemini API Key not configured' },
+        { error: 'Gemini API Key not configured. Please add it in Settings.' },
+        { status: 400 }
+      )
+    }
+
+    const apiKey = await getApiKey(user.geminiApiKey)
+    if (!apiKey) {
+      console.log('[Quiz API] ❌ Failed to get API key')
+      return NextResponse.json(
+        { error: 'Failed to retrieve API key' },
         { status: 400 }
       )
     }

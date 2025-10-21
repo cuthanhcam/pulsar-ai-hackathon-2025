@@ -98,17 +98,23 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile }) {
+      console.log('[OAuth] Sign in callback triggered')
+      console.log('[OAuth] Provider:', account?.provider)
+      console.log('[OAuth] User email:', user.email)
+      
       // For OAuth providers (GitHub, Google)
       if (account?.provider === 'github' || account?.provider === 'google') {
         try {
+          console.log('[OAuth] Checking if user exists...')
           // Check if user exists
           const existingUser = await prisma.user.findUnique({
             where: { email: user.email! }
           })
 
           if (!existingUser) {
+            console.log('[OAuth] User not found, creating new user...')
             // Create new user for OAuth login
-            await prisma.user.create({
+            const newUser = await prisma.user.create({
               data: {
                 email: user.email!,
                 name: user.name || user.email!.split('@')[0],
@@ -117,26 +123,30 @@ export const authOptions: AuthOptions = {
                 credits: 500, // Give initial credits
               }
             })
+            console.log('[OAuth] ✅ New user created:', newUser.id, newUser.email)
 
             // Create progress record
-            const newUser = await prisma.user.findUnique({
-              where: { email: user.email! }
-            })
-            
-            if (newUser) {
+            try {
               await prisma.progress.create({
                 data: {
                   userId: newUser.id
                 }
               })
+              console.log('[OAuth] ✅ Progress record created')
+            } catch (progressError) {
+              console.error('[OAuth] Failed to create progress:', progressError)
+              // Don't fail login if progress creation fails
             }
+          } else {
+            console.log('[OAuth] ✅ Existing user found:', existingUser.id, existingUser.email)
           }
           return true
         } catch (error) {
-          console.error('OAuth sign in error:', error)
+          console.error('[OAuth] ❌ Sign in error:', error)
           return false
         }
       }
+      console.log('[OAuth] Not an OAuth provider, allowing sign in')
       return true
     },
     async jwt({ token, user, trigger, account }) {
@@ -177,6 +187,24 @@ export const authOptions: AuthOptions = {
   cookies: {
     sessionToken: {
       name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    },
+    callbackUrl: {
+      name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.callback-url`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    },
+    csrfToken: {
+      name: `${process.env.NODE_ENV === 'production' ? '__Host-' : ''}next-auth.csrf-token`,
       options: {
         httpOnly: true,
         sameSite: 'lax',

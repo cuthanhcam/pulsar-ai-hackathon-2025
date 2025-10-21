@@ -9,7 +9,8 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   log: process.env.NODE_ENV === 'development' ? [] : [], // Disable logs for performance
   datasources: {
     db: {
-      url: process.env.DATABASE_URL,
+      // Use DIRECT_URL for better reliability, fallback to DATABASE_URL
+      url: process.env.DIRECT_URL || process.env.DATABASE_URL,
     },
   },
 })

@@ -71,9 +71,11 @@ export default function SettingsPage() {
         const data = await response.json()
         
         if (response.ok) {
-          if (data.geminiApiKey) {
-            setCurrentApiKey(data.geminiApiKey)
-            setGeminiApiKey(data.geminiApiKey)
+          // Check if user has API key set
+          if (data.hasApiKey || data.user?.hasApiKey) {
+            // Show masked indicator that key exists
+            setCurrentApiKey('AIza••••••••••••••••••••••••••••••••') // Masked for security
+            setGeminiApiKey('') // Keep input empty for new key entry
           }
           if (typeof data.credits === 'number') {
             setCredits(data.credits)
@@ -512,7 +514,7 @@ export default function SettingsPage() {
                       type={showApiKey ? "text" : "password"}
                       value={geminiApiKey}
                       onChange={(e) => setGeminiApiKey(e.target.value)}
-                      placeholder="AIzaSy... (paste your API key here)"
+                      placeholder={currentApiKey ? currentApiKey : "AIzaSy... (paste your API key here)"}
                       className="w-full px-4 py-4 bg-zinc-800 border-2 border-zinc-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-mono text-sm pr-12 transition-all"
                     />
                     <button
@@ -525,9 +527,15 @@ export default function SettingsPage() {
                     </button>
                   </div>
                   
-                  {currentApiKey && !showApiKey && (
-                    <div className="text-xs text-zinc-500 mb-4 font-mono">
-                      Current: {maskApiKey(currentApiKey)}
+                  {currentApiKey && (
+                    <div className="flex items-center gap-2 text-xs mb-4">
+                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <span className="text-green-500 font-semibold">API Key configured</span>
+                      {!showApiKey && (
+                        <span className="text-zinc-500 font-mono ml-2">
+                          ({maskApiKey(currentApiKey)})
+                        </span>
+                      )}
                     </div>
                   )}
                   
