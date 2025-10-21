@@ -51,7 +51,7 @@ export default function ReactionPicker({ onReact, currentReaction, className = '
     >
       {/* Reaction Button */}
       <button
-        onClick={() => handleReaction('like')}
+        onClick={() => handleReaction(currentReaction || 'like')}
         className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
           currentReaction
             ? `${currentReactionData?.color} font-semibold bg-gradient-to-r from-zinc-800/50 to-zinc-900/50 border border-zinc-700`

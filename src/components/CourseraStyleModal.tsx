@@ -2,6 +2,7 @@
 
 import { X, ChevronRight, BookOpen, Clock, CheckCircle2, PlayCircle, Loader2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import generationLock from '@/lib/generationLock'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 
@@ -85,17 +86,50 @@ export default function CourseraStyleModal({
 
       // If no content or too short, generate new content
       console.log('[Modal] Generating content for section:', sectionId)
-      const generateResponse = await fetch(`/api/sections/${sectionId}`, {
-        method: 'POST'
-      })
 
-      if (!generateResponse.ok) {
-        const errorData = await generateResponse.json()
-        throw new Error(errorData.error || 'Failed to generate content')
+      if (generationLock.isGenerating(sectionId)) {
+        console.log(`[Modal] Section ${sectionId} already generating (shared lock) — polling`)
+      } else {
+        generationLock.markGenerating(sectionId)
+        const generateResponse = await fetch(`/api/sections/${sectionId}`, {
+          method: 'POST'
+        })
+
+        if (!generateResponse.ok) {
+          const errorData = await generateResponse.json()
+          generationLock.clearGenerating(sectionId)
+          throw new Error(errorData.error || 'Failed to generate content')
+        }
+
+        const data = await generateResponse.json()
+        setSectionContent(data.content)
+        generationLock.clearGenerating(sectionId)
+        return
       }
 
-      const data = await generateResponse.json()
-      setSectionContent(data.content)
+      // Poll until ready
+      let delay = 2000
+      const maxDelay = 30000
+      let elapsed = 0
+      while (elapsed < 120000) {
+        try {
+          const getResponse = await fetch(`/api/sections/${sectionId}`)
+          if (getResponse.ok) {
+            const data = await getResponse.json()
+            if (data.content && data.content.trim().length > 100) {
+              setSectionContent(data.content)
+              generationLock.clearGenerating(sectionId)
+              return
+            }
+          }
+        } catch (err) {
+          console.warn('[Modal] Polling error:', err)
+        }
+        await new Promise(r => setTimeout(r, delay))
+        elapsed += delay
+        delay = Math.min(maxDelay, Math.round(delay * 1.8))
+      }
+      generationLock.clearGenerating(sectionId)
     } catch (err) {
       console.error('[Modal] Error fetching section:', err)
       setError(err instanceof Error ? err.message : 'Failed to load content')
@@ -120,10 +154,10 @@ export default function CourseraStyleModal({
   }
 
   const findCurrentSection = () => {
-    for (const module of modules) {
-      if (!module.sections || module.sections.length === 0) continue
-      const section = module.sections.find(s => s.id === activeSectionId)
-      if (section) return { module, section }
+    for (const mod of modules) {
+      if (!mod.sections || mod.sections.length === 0) continue
+      const section = mod.sections.find(s => s.id === activeSectionId)
+      if (section) return { module: mod, section }
     }
     return null
   }

@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 // Toggle reaction on a post
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -17,11 +17,72 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // ✅ Verify user exists in database - auto-create if needed
+    let userId = session.user.id
+    let userExists = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true }
+    })
+
+    if (!userExists) {
+      console.log('[Community API] User not found, auto-creating:', userId)
+      try {
+        const userEmail = session.user.email || `user-${userId}@app.local`
+        
+        // Check if email already exists (OAuth conflict)
+        let existingUser = await prisma.user.findUnique({
+          where: { email: userEmail },
+          select: { id: true }
+        })
+
+        if (existingUser) {
+          // Use existing user with this email
+          userId = existingUser.id
+          userExists = existingUser
+          console.log('[Community API] Using existing user with email:', userEmail)
+        } else {
+          // Create new user
+          await prisma.user.create({
+            data: {
+              id: userId,
+              email: userEmail,
+              name: session.user.name || 'User',
+              password: '',
+              role: 'user',
+              credits: 500
+            }
+          })
+          userExists = { id: userId }
+          console.log('[Community API] User auto-created successfully')
+        }
+      } catch (createError) {
+        console.error('[Community API] Failed to auto-create user:', createError instanceof Error ? createError.message : createError)
+        // Don't block - try to proceed
+        userExists = { id: userId }
+      }
+    }
+
     const { reactionType } = await request.json()
+    
+    // Support both sync and async params for compatibility
+    const params = context.params instanceof Promise ? await context.params : context.params
     const postId = params.id
 
     if (!['like', 'love', 'haha', 'wow', 'sad', 'angry'].includes(reactionType)) {
       return NextResponse.json({ error: 'Invalid reaction type' }, { status: 400 })
+    }
+
+    // Verify post exists
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: {
+        user: { select: { id: true, name: true } },
+        lesson: { select: { title: true } }
+      }
+    })
+
+    if (!post) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
     }
 
     // Check if user already reacted
@@ -29,7 +90,7 @@ export async function POST(
       where: {
         postId_userId: {
           postId,
-          userId: session.user.id
+          userId
         }
       }
     })
@@ -54,22 +115,13 @@ export async function POST(
       await prisma.postLike.create({
         data: {
           postId,
-          userId: session.user.id,
+          userId,
           reactionType
         }
       })
 
-      // Get post details for notification
-      const post = await prisma.post.findUnique({
-        where: { id: postId },
-        include: {
-          user: { select: { id: true, name: true } },
-          lesson: { select: { title: true } }
-        }
-      })
-
       // Create notification for post author (if not reacting to own post)
-      if (post && post.userId !== session.user.id) {
+      if (post.userId !== userId) {
         const reactionEmoji = reactionType === 'like' ? '👍' : 
                              reactionType === 'love' ? '❤️' :
                              reactionType === 'haha' ? '😆' :
@@ -102,9 +154,11 @@ export async function POST(
 // Get reactions for a post
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
+    // Support both sync and async params for compatibility
+    const params = context.params instanceof Promise ? await context.params : context.params
     const postId = params.id
 
     // Get reaction counts by type

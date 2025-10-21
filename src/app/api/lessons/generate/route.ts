@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { GEMINI_MODEL_PRIMARY, GEMINI_MODEL_FALLBACK } from '@/lib/gemini'
 import { parseMarkdownCourse, validateParsedCourse } from '@/lib/markdown-parser'
+import { getApiKey } from '@/lib/encryption'
 
 export async function POST(req: Request) {
   // Add timeout wrapper - 4 minutes for detailed content generation
@@ -37,13 +38,31 @@ export async function POST(req: Request) {
     
     console.log('[API] User found:', !!user, 'Has API key:', !!user?.geminiApiKey, 'Credits:', user?.credits)
 
-    // Use user's API key or fall back to environment variable
-    const apiKey = user?.geminiApiKey || process.env.GEMINI_API_KEY
-
-    if (!apiKey || apiKey === 'your-gemini-api-key-here') {
-      console.log('[API] No valid Gemini API key found')
+    // 🔒 Decrypt user's API key (REQUIRED - no fallback to env var)
+    if (!user?.geminiApiKey) {
+      console.log('[API] No API key found in user settings')
       return NextResponse.json(
-        { error: 'Gemini API Key not configured. Please add it in Settings or configure GEMINI_API_KEY environment variable.' },
+        { error: 'Gemini API Key not configured. Please add your API key in Settings.' },
+        { status: 400 }
+      )
+    }
+
+    let apiKey: string | null = null
+    try {
+      apiKey = await getApiKey(user.geminiApiKey)
+      console.log('[API] API key retrieved, length:', apiKey?.length)
+    } catch (error) {
+      console.error('[API] Failed to get API key:', error)
+      return NextResponse.json(
+        { error: 'Failed to retrieve your API key. Please re-enter it in Settings.' },
+        { status: 400 }
+      )
+    }
+
+    if (!apiKey) {
+      console.log('[API] API key is empty after decryption')
+      return NextResponse.json(
+        { error: 'API key is empty. Please re-enter your API key in Settings.' },
         { status: 400 }
       )
     }
@@ -93,7 +112,7 @@ export async function POST(req: Request) {
         temperature: 0.7,
         topK: 40,
         topP: 0.95,
-        maxOutputTokens: 30000, // Increased for 4 modules × 3 sections × 800 words each
+        maxOutputTokens: 20000, // Increased for 4 modules × 3 sections × 800 words each
       }
     })
     let modelUsed = GEMINI_MODEL_PRIMARY

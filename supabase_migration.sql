@@ -27,6 +27,7 @@ DROP TABLE IF EXISTS "QuizResult" CASCADE;
 DROP TABLE IF EXISTS "QuizQuestion" CASCADE;
 DROP TABLE IF EXISTS "Quiz" CASCADE;
 DROP TABLE IF EXISTS "Mindmap" CASCADE;
+DROP TABLE IF EXISTS "SectionEmbedding" CASCADE;
 DROP TABLE IF EXISTS "Section" CASCADE;
 DROP TABLE IF EXISTS "Module" CASCADE;
 DROP TABLE IF EXISTS "Lesson" CASCADE;
@@ -102,7 +103,24 @@ CREATE TABLE "Section" (
     "order" INTEGER NOT NULL,
     "duration" INTEGER NOT NULL DEFAULT 10,
     "completed" BOOLEAN NOT NULL DEFAULT false,
+    "isGenerating" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY ("moduleId") REFERENCES "Module"("id") ON DELETE CASCADE
+);
+
+-- SectionEmbedding Table (for RAG system)
+CREATE TABLE "SectionEmbedding" (
+    "id" TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+    "sectionId" TEXT NOT NULL,
+    "moduleId" TEXT NOT NULL,
+    "courseId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "vectorId" TEXT NOT NULL,
+    "contentHash" TEXT NOT NULL,
+    "chunkIndex" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY ("sectionId") REFERENCES "Section"("id") ON DELETE CASCADE,
     FOREIGN KEY ("moduleId") REFERENCES "Module"("id") ON DELETE CASCADE
 );
 
@@ -340,6 +358,13 @@ CREATE INDEX "Module_lessonId_order_idx" ON "Module"("lessonId", "order");
 CREATE INDEX "Section_moduleId_idx" ON "Section"("moduleId");
 CREATE INDEX "Section_moduleId_order_idx" ON "Section"("moduleId", "order");
 
+-- SectionEmbedding indexes
+CREATE INDEX "SectionEmbedding_sectionId_idx" ON "SectionEmbedding"("sectionId");
+CREATE INDEX "SectionEmbedding_moduleId_idx" ON "SectionEmbedding"("moduleId");
+CREATE INDEX "SectionEmbedding_courseId_idx" ON "SectionEmbedding"("courseId");
+CREATE INDEX "SectionEmbedding_userId_idx" ON "SectionEmbedding"("userId");
+CREATE INDEX "SectionEmbedding_contentHash_idx" ON "SectionEmbedding"("contentHash");
+
 -- Quiz indexes
 CREATE INDEX "Quiz_sectionId_idx" ON "Quiz"("sectionId");
 
@@ -415,6 +440,7 @@ $$ language 'plpgsql';
 -- Apply trigger to tables with updatedAt
 CREATE TRIGGER update_user_updated_at BEFORE UPDATE ON "User" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_lesson_updated_at BEFORE UPDATE ON "Lesson" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_sectionembedding_updated_at BEFORE UPDATE ON "SectionEmbedding" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_mindmap_updated_at BEFORE UPDATE ON "Mindmap" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_quiz_updated_at BEFORE UPDATE ON "Quiz" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_progress_updated_at BEFORE UPDATE ON "Progress" FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

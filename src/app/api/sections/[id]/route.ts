@@ -2,14 +2,13 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { embedSectionOllama } from "@/lib/embedSectionOllama"
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { GEMINI_MODEL_PRIMARY } from '@/lib/gemini'
+import { getApiKey } from '@/lib/encryption'
 
+const generatingSections = new Map<string, boolean>()
 // GET: Fetch section content
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
-
 export async function GET(
   req: Request,
   { params }: { params: { id: string } }
@@ -91,6 +90,7 @@ export async function POST(
   )
   
   const mainLogic = async () => {
+    const sectionId = params.id
   try {
     const session = await getServerSession(authOptions)
     
@@ -100,7 +100,14 @@ export async function POST(
         { status: 401 }
       )
     }
-
+  if (generatingSections.get(sectionId)) {
+        console.log(`[API] Section ${sectionId} is already generating -> block duplicate`)
+        return NextResponse.json(
+          { error: 'Section is already generating, please wait...' },
+          { status: 429 }
+        )
+    }
+    generatingSections.set(sectionId, true)
     // Get section with context
     const section = await prisma.section.findUnique({
       where: { id: params.id },
@@ -136,7 +143,7 @@ export async function POST(
         { status: 404 }
       )
     }
-
+    
     // Check ownership
     if (section.module.lesson.userId !== session.user.id) {
       return NextResponse.json(
@@ -144,7 +151,16 @@ export async function POST(
         { status: 403 }
       )
     }
-
+    if (section.content && section.content.trim().length > 100) {
+        console.log('[API] Section content already exists, returning cached')
+        return NextResponse.json({
+          id: section.id,
+          title: section.title,
+          content: section.content,
+          duration: section.duration,
+          cached: true
+        })
+      }
     // If content already exists, return it
     if (section.content && section.content.trim().length > 100) {
       console.log('[API] Section content already exists, returning cached')
@@ -156,18 +172,25 @@ export async function POST(
         cached: true
       })
     }
-
+    
     // Get user's API key
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: { geminiApiKey: true, credits: true }
     })
 
-    const apiKey = user?.geminiApiKey || process.env.GEMINI_API_KEY
-
-    if (!apiKey || apiKey === 'your-gemini-api-key-here') {
+    // 🔒 Get user's API key (auto-decrypt if encrypted, or use as-is if plain text)
+    if (!user?.geminiApiKey) {
       return NextResponse.json(
-        { error: 'Gemini API Key not configured' },
+        { error: 'Gemini API Key not configured. Please add it in Settings.' },
+        { status: 400 }
+      )
+    }
+
+    const apiKey = await getApiKey(user.geminiApiKey)
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: 'Failed to retrieve API key' },
         { status: 400 }
       )
     }
@@ -358,7 +381,9 @@ Trong bài học này, chúng ta đã học được:
 - Ngôn ngữ chuyên nghiệp nhưng dễ hiểu
 - Tránh nội dung chung chung, phải CỤ THỂ
 
-Hãy tạo một bài học XUẤT SẮC, ĐẲNG CẤP!`
+⚠️ QUAN TRỌNG: Viết HOÀN CHỈNH đến hết phần Tóm tắt. KHÔNG được dừng giữa chừng hay bỏ sót bất kỳ phần nào!
+
+Hãy tạo một bài học XUẤT SẮC, ĐẲNG CẤP, HOÀN CHỈNH 100%!`
 
     console.log('[API] Generating content for section:', section.title)
 
@@ -369,7 +394,7 @@ Hãy tạo một bài học XUẤT SẮC, ĐẲNG CẤP!`
         temperature: 0.7,
         topK: 40,
         topP: 0.95,
-        maxOutputTokens: 8000, // Increased for more detailed content with exercises
+        maxOutputTokens: 30000, // 🔥 Increased to 30K for complete, detailed content (no truncation)
       }
     })
 
@@ -395,7 +420,7 @@ Hãy tạo một bài học XUẤT SẮC, ĐẲNG CẤP!`
       where: { id: section.id },
       data: { content }
     })
-
+    
     // Deduct credits
     await prisma.user.update({
       where: { id: session.user.id },
@@ -405,6 +430,10 @@ Hãy tạo một bài học XUẤT SẮC, ĐẲNG CẤP!`
         }
       }
     })
+    console.log('[DEBUG] Starting Embedding')
+    await embedSectionOllama(section.id, section.module.lesson.id, session.user.id)
+    .then(() => console.log('[API]  Embedding done'))
+    .catch(err => console.error('[API]  Embedding error:', err))
 
     console.log('[API] Section content saved and credits deducted')
 
@@ -427,6 +456,9 @@ Hãy tạo một bài học XUẤT SẮC, ĐẲNG CẤP!`
       { status: 500 }
     )
   }
+  finally {
+    generatingSections.delete(params.id)
+  }
   }
 
   // Race between timeout and main logic
@@ -434,6 +466,7 @@ Hãy tạo một bài học XUẤT SẮC, ĐẲNG CẤP!`
     return await Promise.race([mainLogic(), timeoutPromise]) as Response
   } catch (error) {
     console.error('[API] Top-level error or timeout:', error)
+    generatingSections.delete(params.id)
     return NextResponse.json(
       { 
         error: 'Request failed or timed out', 
