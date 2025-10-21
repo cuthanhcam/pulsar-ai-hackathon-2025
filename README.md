@@ -1,1145 +1,1128 @@
-# PulsarTeam AI Learning Platform
+<div align="center">
 
-> **Revolutionizing Education Through AI-Powered Personalized Learning**
+# 🚀 Pulsar AI Learning Platform
 
-An intelligent learning platform built with cutting-edge web technologies, featuring AI-generated courses, interactive mind maps, and personalized learning experiences. Developed by **PulsarTeam** for the K-Tech Innovation Challenge.
+### _Revolutionizing Education Through AI-Powered Personalized Learning_
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=flat-square&logo=prisma)](https://www.prisma.io/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](./LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-15.0-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.7-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](./LICENSE)
 
----
-
-## 🎯 Project Vision
-
-**PulsarTeam** aims to democratize education by leveraging artificial intelligence to create personalized, adaptive learning experiences. Our platform transforms the traditional one-size-fits-all approach into a dynamic, student-centered learning journey where every course is tailored to individual needs, preferences, and learning styles.
-
-### The Problem We're Solving
-
-Traditional learning platforms offer static content that doesn't adapt to:
-- Individual learning speeds and preferences
-- Different skill levels and backgrounds
-- Specific topics of interest
-- Preferred instructional methods
-- Available study time
-
-### Our Solution
-
-An AI-powered platform that:
-1. **Generates custom courses** based on user preferences and skill level
-2. **Visualizes learning paths** through interactive mind maps
-3. **Provides real-time AI assistance** during lessons with text selection explanations
-4. **Tracks progress dynamically** across all courses and sections
-5. **Adapts content** to individual learning styles
-6. **Offers flexible pricing** with credit packages starting at 500 free credits
-7. **Ensures accessibility** with instant credit delivery and no credit card required to start
+<p>
+<a href="#-getting-started"><kbd> <br> 🚀 Get Started <br> </kbd></a>
+<a href="#-features"><kbd> <br> ✨ Features <br> </kbd></a>
+<a href="#-architecture"><kbd> <br> 🏗️ Architecture <br> </kbd></a>
+<a href="#-deployment"><kbd> <br> 📦 Deploy <br> </kbd></a>
+</p>
 
 ---
 
-## 🌟 Key Features
+### 🎯 **Next-Generation AI Education Platform**
 
-### 🤖 AI Course Generation
-- **Google Gemini AI Integration**: Leverages advanced LLM for content generation
-- **Personalized Curriculum**: Creates 6-8 modules with 3-5 sections each
-- **Adaptive Difficulty**: Adjusts content based on skill level (beginner to expert)
-- **Multi-Modal Learning**: Supports visual, auditory, reading/writing, and kinesthetic styles
+Transform traditional learning into personalized, adaptive experiences powered by cutting-edge AI technology. Built for the modern learner, optimized for results.
 
-### 📊 Interactive Mind Maps
-- **Visual Learning Paths**: Built with ReactFlow for intuitive course navigation
-- **Zigzag Layout**: Alternating left-right module placement for better readability
-- **Progress Tracking**: Real-time visual indicators for completed sections
-- **Dynamic Updates**: Instant UI refresh without page reload
-
-### 💬 AI Assistant (Enhanced)
-- **Contextual Help**: AI chatbot integrated within each lesson
-- **Text Selection Explanation**: Select any text in lesson content and click AI button for instant explanations
-- **Smart Floating Button**: AI assistant icon appears next to selected text
-- **Section-Specific Guidance**: Understands current lesson content
-- **Quick Questions**: Pre-defined questions for faster learning
-- **Natural Conversations**: Powered by Gemini AI for human-like interactions
-
-### 💳 Credit System & Pricing
-- **Flexible Pricing Plans**: Free, Pro, Premium, and Ultimate tiers
-- **Credit Packages**: 500 to 100,000 credits with volume discounts
-- **Currency Toggle**: Switch between USD and VND
-- **Billing Options**: One-time purchase or monthly subscription (20% discount)
-- **Seamless Checkout**: Integrated checkout modal with user info pre-fill
-- **Free Credits**: New users start with 500 free credits
-
-### 🎓 Smart Quiz System
-- **Auto-Generated Quizzes**: AI creates relevant multiple-choice questions
-- **Instant Feedback**: Immediate scoring and explanations
-- **Credit Rewards**: Earn credits for engagement and completion
-- **Professional Icons**: Trophy, ThumbsUp, and TrendingUp icons for different score ranges
-
-### 📈 Progress Dashboard
-- **Section-Level Tracking**: Monitors completion across all courses
-- **Overall Progress Metrics**: Visual representation of learning journey
-- **Course Analytics**: Detailed stats for each course
-- **Auto-Refresh**: Real-time updates when returning to dashboard
-- **Canvas Background**: Animated tech-style background with optimized loading
-
-### ⚙️ User Settings & Profile
-- **Profile Management**: Update name, email, and phone number
-- **Password Changes**: Secure password update with validation
-- **API Key Management**: Custom Gemini API key configuration
-- **Avatar Support**: Profile picture integration
-- **Pre-filled Forms**: User data automatically loaded in checkout and settings
-
-### 🔒 Security & Authentication
-- **NextAuth.js Integration**: Secure email/password authentication
-- **OAuth Support**: Google authentication ready
-- **Password-Protected Actions**: Requires password confirmation for course deletion
-- **Session Management**: Persistent login with JWT tokens
-- **bcrypt Hashing**: Strong password encryption
-
-### 🎨 Modern UI/UX
-- **Dark Theme**: Zinc-950 backgrounds with orange accents throughout
-- **Glass Morphism**: Backdrop-blur effects on cards and modals
-- **Canvas Backgrounds**: Animated particle effects on key pages (dashboard, pricing, settings, 404)
-- **Smooth Animations**: GPU-accelerated scrolling and transitions
-- **Hover Effects**: Interactive team member avatars and pricing cards
-- **Custom 404 Page**: Beautiful error page with navigation shortcuts
-- **Professional Icons**: Lucide React icons throughout the application
+</div>
 
 ---
 
-## 🏗️ Technical Architecture
+## 📋 Table of Contents
 
-### Frontend Stack
-```typescript
-// Modern React with Next.js 14 App Router
-Next.js 14          // React framework with SSR/SSG
-TypeScript 5        // Type-safe development
-Tailwind CSS 3      // Utility-first styling
-ReactFlow 11        // Mind map visualization
-Lucide React        // Icon library
-React Markdown      // Content rendering with syntax highlighting
-```
+<details>
+<summary>📖 <strong>Navigate the Documentation</strong></summary>
 
-### Backend Stack
-```typescript
-// API & Database
-Next.js API Routes  // RESTful endpoints
-Prisma ORM          // Type-safe database client
-PostgreSQL          // Production database
-Google Gemini AI    // Content & quiz generation
-NextAuth.js         // Authentication
-bcryptjs            // Password hashing
-```
+- [🎯 Overview](#-overview)
+- [✨ Features](#-features)
+- [🚀 Getting Started](#-getting-started)
+- [🏗️ Architecture](#️-architecture)
+- [📁 Project Structure](#-project-structure)
+- [⚙️ Configuration](#️-configuration)
+- [📚 API Documentation](#-api-documentation)
+- [🎨 UI Components](#-ui-components)
+- [� Security](#-security)
+- [🧪 Testing](#-testing)
+- [📦 Deployment](#-deployment)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
-### Key Technologies
-
-| Technology | Purpose | Why We Chose It |
-|------------|---------|-----------------|
-| **Next.js 14** | Full-stack framework | SSR, API routes, optimized performance |
-| **TypeScript** | Language | Type safety, better DX, fewer runtime errors |
-| **Prisma** | ORM | Type-safe queries, migrations, great DX |
-| **Tailwind CSS** | Styling | Rapid development, consistent design system |
-| **ReactFlow** | Mind maps | Interactive node-based visualizations |
-| **Gemini AI** | Content generation | Advanced LLM, free tier, streaming support |
-| **PostgreSQL** | Database | Robust, scalable, excellent Prisma support |
+</details>
 
 ---
 
-## 🎨 Design System
+## 🎯 Overview
 
-### Factory.ai Inspired Theme
-Our design draws inspiration from **Factory.ai** and **Augment Code**, featuring:
+**Pulsar AI Learning Platform** is a cutting-edge educational ecosystem that harnesses the power of artificial intelligence to deliver personalized, adaptive learning experiences. Built with modern web technologies, this platform transforms traditional education into dynamic, intelligent learning journeys tailored to each individual learner.
 
-- **Dark Mode First**: Zinc-950 backgrounds with orange accents
-- **Subtle Animations**: Smooth transitions and hover effects
-- **Modern UI**: Rounded corners, gradients, and glassmorphism
-- **Orange & White Palette**: Primary orange (#f97316) with white highlights
-- **Micro-interactions**: Icon color changes, button animations, progress bars
+### 🎯 **Why Pulsar AI?**
 
-### Component Architecture
-```
-├── Layout Components
-│   ├── TopBanner         # Animated announcement banner
-│   ├── HeaderNew         # Navigation with credits & user menu
-│   └── Footer            # Links and social media
-│
-├── Feature Components
-│   ├── NetworkCanvas     # Animated particle background (homepage)
-│   ├── TechCanvas        # Tech grid background (dashboard, pricing, settings, 404)
-│   ├── CourseVisualization # ReactFlow mind map
-│   ├── SectionModalNew   # Lesson viewer with text selection AI
-│   ├── CoursePreferencesModal # Multi-step preference selector
-│   ├── CheckoutModal     # Credit purchase with user pre-fill
-│   └── APIKeyErrorModal  # Custom API key setup
-│
-└── UI Components
-    ├── AdvancedSearchBoxNew # Course generation input
-    ├── PopularTopicsNew     # Trending topic cards
-    ├── LoginModal           # Authentication dialog
-    └── OnboardingWrapper    # First-time user guidance
-```
+> _"The future of education is not one-size-fits-all, it's one-size-fits-one."_
 
-### Key Pages
+**Traditional learning platforms struggle with:**
 
-| Page | Route | Description | Special Features |
-|------|-------|-------------|------------------|
-| **Homepage** | `/` | Landing page with hero & features | Team hover effects, particle canvas |
-| **AI Tutor** | `/ai-tutor` | AI course generation interface | Course preferences, topic search |
-| **Course Detail** | `/course/[id]` | Interactive mind map view | ReactFlow visualization, progress tracking |
-| **Lesson Viewer** | `/course/[id]?section=[sid]` | Detailed section content | Text selection AI, chat sidebar, quizzes |
-| **Dashboard** | `/dashboard` | User's course overview | Progress stats, canvas background |
-| **Pricing** | `/pricing` | Credit packages & checkout | Currency toggle, billing options, glass cards |
-| **Settings** | `/settings` | Profile & API key management | Profile update, password change, canvas |
-| **Login/Register** | `/login`, `/register` | Authentication | Email/password, OAuth ready |
-| **404 Error** | `*` (any invalid route) | Custom error page | Canvas background, quick navigation |
+| Challenge                    | Impact                            |
+| ---------------------------- | --------------------------------- |
+| ⏰ **Fixed Pace Learning**   | Students fall behind or get bored |
+| � **Generic Content**        | Irrelevant to individual goals    |
+| 🎯 **No Personalization**    | Ignores learning preferences      |
+| 📊 **Limited Feedback**      | No adaptive improvement           |
+| 🤖 **Lack of AI Assistance** | Students learn alone              |
 
----
+### 🚀 **Our AI-Powered Solution**
 
-## 🚀 How It Works
-
-### 1. User Journey
+**Pulsar AI revolutionizes learning through:**
 
 ```mermaid
 graph TD
-    A[User Registration] --> B[Free 500 Credits]
-    B --> C[Course Preferences]
-    C --> D[AI Course Generation]
-    D --> E[Interactive Mind Map]
-    E --> F[Section Learning]
-    F --> G[Text Selection AI Explain]
-    F --> H[AI Assistant Chat]
-    F --> I[Knowledge Quiz]
-    I --> J[Progress Tracking]
-    J --> K{Need More Credits?}
-    K -->|Yes| L[Visit Pricing Page]
-    L --> M[Select Plan & Checkout]
-    M --> N[Continue Learning]
-    K -->|No| N
-    N --> O[Course Completion]
+    A[🎯 Personalized Learning] --> B[🤖 AI-Generated Courses]
+    A --> C[🗺️ Interactive Mind Maps]
+    A --> D[💬 Intelligent Assistant]
+    A --> E[📊 Progress Analytics]
+    A --> F[🌐 Social Community]
+
+    B --> G[✨ Tailored Content]
+    C --> H[📍 Visual Navigation]
+    D --> I[🎓 Instant Help]
+    E --> J[📈 Real-time Tracking]
+    F --> K[🤝 Collaborative Learning]
 ```
 
-### 2. AI Course Generation Flow
+### ⭐ **Key Differentiators**
 
-1. **User Input**: Topic + Preferences (learning style, time, skill level)
-2. **Preference Collection**: Multi-step modal gathers detailed requirements
-3. **AI Processing**: Gemini AI generates structured curriculum
-4. **Database Storage**: Saves course with modules, sections, and content
-5. **Visualization**: Renders as interactive mind map
-6. **Ready to Learn**: User can start from any section
-
-### 3. Content Generation
-
-```typescript
-// Example: AI generates detailed lesson content
-const prompt = `Create a comprehensive lesson about "${sectionTitle}"
-                for ${skillLevel} learners. Include:
-                - H1, H2, H3 headings
-                - Code examples with syntax
-                - Real-world applications
-                - Practice exercises`
-
-// Streams content in real-time using SSE
-const stream = await generateContent(prompt)
-```
-
-### 4. Text Selection AI Explanation
-
-```typescript
-// User selects text in lesson content
-const handleTextSelection = () => {
-  const selection = window.getSelection()
-  const text = selection?.toString().trim()
-  
-  if (text && text.length > 0) {
-    // Show floating AI button next to selection
-    showAIExplainButton(text, position)
-  }
-}
-
-// Click AI button to get instant explanation
-const handleExplainSelection = async () => {
-  // Opens AI chat if closed
-  // Sends: "Giải thích đoạn này: [selected text]"
-  // AI responds with detailed explanation
-}
-```
-
-### 5. Credit Purchase Flow
-
-1. **Browse Pricing**: View pricing tiers on `/pricing` page
-2. **Currency Selection**: Toggle between USD and VND
-3. **Billing Cycle**: Choose one-time or monthly (20% discount)
-4. **Checkout**: Click "Buy Now" to open checkout modal
-5. **Auto-fill**: User info pre-filled if logged in
-6. **Payment**: Complete payment details
-7. **Credits Added**: Instantly added to user account
-
-### 6. Progress Tracking
-
-- **Section Level**: Marks individual sections as complete
-- **Module Level**: Calculates percentage based on completed sections
-- **Course Level**: Overall progress across all modules
-- **Dashboard**: Aggregates stats from all courses with animated canvas background
+- **🤖 Dynamic Course Generation**: AI creates courses based on your specific needs
+- **🧠 Adaptive Intelligence**: Platform learns and evolves with you
+- **🎯 Goal-Oriented Learning**: Every lesson aligned with your objectives
+- **⚡ Instant AI Support**: Get help the moment you need it
+- **� Modern Experience**: Beautiful, responsive design across all devices
 
 ---
 
-## 📦 Installation & Setup
+## ✨ Features
 
-### Prerequisites
+### 🤖 AI-Powered Course Generation
 
-```bash
-Node.js >= 18.x
-npm >= 9.x
-PostgreSQL >= 14.x (or use Supabase/Neon)
-Google Gemini API Key (free at ai.google.dev)
+<table>
+<tr>
+<td width="50%">
+
+**Smart Curriculum Creation**
+
+- Google Gemini AI integration
+- 6-8 modules per course
+- 3-5 sections per module
+- Adaptive difficulty levels
+- Multi-modal learning support
+
+</td>
+<td width="50%">
+
+**Personalization Engine**
+
+- Learning style detection
+- Skill level assessment
+- Time-based optimization
+- Goal-oriented content
+- Interest-based topics
+
+</td>
+</tr>
+</table>
+
+### 📊 Interactive Mind Maps
+
+```mermaid
+graph LR
+    A[Course] --> B[Module 1]
+    A --> C[Module 2]
+    A --> D[Module 3]
+    B --> E[Section 1.1]
+    B --> F[Section 1.2]
+    C --> G[Section 2.1]
+    C --> H[Section 2.2]
+    style A fill:#f97316
+    style B fill:#3b82f6
+    style C fill:#3b82f6
+    style D fill:#3b82f6
 ```
 
-### Step 1: Clone Repository
+- **Visual Navigation**: Zigzag layout with ReactFlow
+- **Progress Tracking**: Real-time completion indicators
+- **Interactive Nodes**: Click to start any section
+- **Responsive Design**: Works on all devices
 
-```bash
-git clone https://github.com/your-team/pulsarteam-ai-learning.git
-cd pulsarteam-ai-learning
+### 💬 Intelligent AI Assistant
+
+| Feature                        | Description                                        |
+| ------------------------------ | -------------------------------------------------- |
+| **Text Selection Explanation** | Highlight any text and get instant AI explanations |
+| **Contextual Help**            | AI understands current lesson context              |
+| **Quick Questions**            | Pre-defined questions for faster learning          |
+| **Chat History**               | Persistent conversation across sessions            |
+| **Multi-language Support**     | Responds in user's preferred language              |
+
+### 🎓 Smart Assessment System
+
+- **Auto-Generated Quizzes**: AI creates relevant multiple-choice questions
+- **Instant Feedback**: Real-time scoring and explanations
+- **Credit Rewards**: Earn credits for engagement
+- **Progress Analytics**: Detailed performance metrics
+
+### 🌐 Social Learning Hub
+
+<details>
+<summary><b>Community Features</b></summary>
+
+- **Course Sharing**: Publish courses to community
+- **Discussion Posts**: Share insights and ask questions
+- **Reactions System**: Like, love, wow, and more
+- **Nested Comments**: Threaded discussions
+- **User Profiles**: Track learning journey
+- **Messenger**: Real-time chat with learners
+
+</details>
+
+### 💳 Flexible Credit System
+
+```
+┌─────────────┬──────────┬──────────┬──────────────────┐
+│ Tier        │ Credits  │ Price    │ Best For         │
+├─────────────┼──────────┼──────────┼──────────────────┤
+│ Free Trial  │ 500      │ $0       │ Getting Started  │
+│ Starter     │ 1,500    │ $5       │ Casual Learners  │
+│ Professional│ 4,000    │ $12      │ Serious Students │
+│ Ultimate    │ 35,000   │ $35      │ Power Users      │
+└─────────────┴──────────┴──────────┴──────────────────┘
 ```
 
-### Step 2: Install Dependencies
+- **Multi-currency**: USD & VND support
+- **Billing Options**: One-time or monthly (20% discount)
+- **Instant Delivery**: Credits added immediately
+- **Transaction History**: Full audit trail
+
+### ⚙️ User Management
+
+- **Profile Customization**: Name, email, phone, avatar
+- **Password Security**: Bcrypt hashing with confirmation
+- **API Key Configuration**: Custom Gemini API keys
+- **Credit Balance**: Real-time tracking
+- **Activity Dashboard**: Course progress overview
+
+---
+
+## 🏗️ Architecture
+
+### Tech Stack
+
+<div align="center">
+
+| Layer              | Technologies                                       |
+| ------------------ | -------------------------------------------------- |
+| **Frontend**       | Next.js 14, React 18, TypeScript 5, Tailwind CSS 3 |
+| **Backend**        | Next.js API Routes, Prisma ORM, PostgreSQL         |
+| **AI/ML**          | Google Gemini AI, Qdrant Vector DB, Ollama         |
+| **Authentication** | NextAuth.js, bcrypt, JWT                           |
+| **UI/UX**          | ReactFlow, Lucide Icons, Recharts, React Markdown  |
+| **Dev Tools**      | Turbopack, ESLint, Prettier, SWC                   |
+
+</div>
+
+### System Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                     Client Browser                       │
+│  (Next.js App Router + React Server Components)         │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│                  Next.js API Routes                      │
+│  ┌─────────┬─────────┬─────────┬──────────┬──────────┐ │
+│  │  Auth   │ Lessons │  Quiz   │   Chat   │  Admin   │ │
+│  └─────────┴─────────┴─────────┴──────────┴──────────┘ │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+         ┌─────────┴─────────┐
+         ▼                   ▼
+┌─────────────────┐  ┌─────────────────┐
+│   PostgreSQL    │  │   Gemini AI     │
+│   (Prisma ORM)  │  │   (Google)      │
+│                 │  │                 │
+│  • Users        │  │  • Generate     │
+│  • Courses      │  │  • Chat         │
+│  • Progress     │  │  • Quiz         │
+│  • Social       │  │  • Embeddings   │
+└─────────────────┘  └─────────────────┘
+         │                   │
+         ▼                   ▼
+┌─────────────────┐  ┌─────────────────┐
+│  Qdrant Vector  │  │     Ollama      │
+│   Database      │  │  (Local LLM)    │
+│  (RAG System)   │  │   (Optional)    │
+└─────────────────┘  └─────────────────┘
+```
+
+### Database Schema
+
+<details>
+<summary><b>View Complete Schema (16 Models)</b></summary>
+
+```prisma
+// Core Models
+User            - Authentication & profile
+Lesson          - Course structure
+Module          - Course modules
+Section         - Learning content
+SectionEmbedding - RAG vectors
+
+// Learning Features
+Quiz            - Assessments
+QuizQuestion    - Quiz items
+QuizResult      - Student results
+Progress        - Learning analytics
+Enrollment      - Course registrations
+Rating          - Course reviews
+
+// Social Features
+Post            - Community posts
+PostLike        - Reactions
+PostComment     - Comments
+CommentLike     - Comment reactions
+
+// Communication
+Conversation    - Message threads
+ConversationParticipant - Thread members
+Message         - Chat messages
+Notification    - User alerts
+
+// Admin & Security
+OTP             - Email verification
+CreditTransaction - Credit history
+```
+
+</details>
+
+### API Endpoints
+
+<details>
+<summary><b>📡 View All 48 Endpoints</b></summary>
+
+#### Authentication
+
+```
+POST   /api/auth/register          - Create new account
+POST   /api/auth/[...nextauth]     - NextAuth handler
+POST   /api/auth/verify-password   - Password verification
+POST   /api/auth/send-otp          - Send OTP email
+POST   /api/auth/verify-otp        - Verify OTP code
+POST   /api/auth/resend-otp        - Resend OTP
+```
+
+#### Courses & Learning
+
+```
+GET    /api/lessons                - List user courses
+GET    /api/lessons/[id]           - Get course details
+POST   /api/lessons/generate       - Generate AI course
+POST   /api/lessons/clone          - Clone community course
+POST   /api/lessons/stream         - Stream generation
+DELETE /api/lessons/[id]/delete    - Delete course
+GET    /api/sections/[id]          - Get section content
+POST   /api/sections/[id]/complete - Mark section done
+```
+
+#### Quiz & Assessment
+
+```
+POST   /api/quiz/generate          - Generate quiz
+POST   /api/quiz/submit            - Submit answers
+GET    /api/progress               - Get user progress
+```
+
+#### AI Chat
+
+```
+POST   /api/chat                   - Send message
+POST   /api/chat/stream            - Stream response
+```
+
+#### User Management
+
+```
+GET    /api/user/profile           - Get profile
+POST   /api/user/update-profile    - Update profile
+POST   /api/user/update-api-key    - Set Gemini key
+GET    /api/user/get-api-key       - Check key status
+GET    /api/user/credits           - Get credit balance
+```
+
+#### Community
+
+```
+GET    /api/community/courses      - Browse public courses
+GET    /api/community/posts        - List posts
+GET    /api/community/posts/[id]   - Get post details
+POST   /api/community/posts        - Create post
+POST   /api/community/posts/[id]/react    - Add reaction
+GET    /api/community/posts/[id]/comments - Get comments
+POST   /api/community/posts/[id]/comments - Add comment
+POST   /api/community/enroll       - Enroll in course
+```
+
+#### Messenger
+
+```
+GET    /api/messenger/conversations           - List chats
+GET    /api/messenger/conversations/[id]/messages - Get messages
+POST   /api/messenger/conversations           - Create chat
+POST   /api/messenger/conversations/[id]/mark-read - Mark read
+```
+
+#### Admin Panel
+
+```
+GET    /api/admin/stats            - Platform statistics
+GET    /api/admin/analytics        - User analytics
+GET    /api/admin/revenue          - Revenue tracking
+GET    /api/admin/users            - User management
+GET    /api/admin/users/[id]       - User details
+PUT    /api/admin/users/[id]       - Update user
+GET    /api/admin/courses          - Course management
+PUT    /api/admin/courses/[id]     - Update course
+POST   /api/admin/credits          - Adjust credits
+GET    /api/admin/quizzes          - Quiz statistics
+```
+
+#### Utilities
+
+```
+GET    /api/notifications          - Get notifications
+GET    /api/users/search           - Search users
+GET    /api/users/[id]             - Get user profile
+GET    /api/models/list            - List AI models
+GET    /api/test-db                - Database health check
+```
+
+</details>
+
+---
+
+## 🚀 Getting Started
+
+### 📋 Prerequisites
+
+Before you begin, ensure you have these tools installed:
+
+| Tool              | Version    | Purpose            |
+| ----------------- | ---------- | ------------------ |
+| 🟢 **Node.js**    | `>= 18.17` | JavaScript runtime |
+| 📦 **npm**        | `>= 9.0`   | Package manager    |
+| �️ **PostgreSQL** | `>= 14.0`  | Database           |
+| 🔧 **Git**        | `latest`   | Version control    |
+
+### ⚡ Quick Setup (5 minutes)
+
+Follow these steps to get Pulsar AI running locally:
+
+#### 1️⃣ **Clone & Navigate**
+
+```bash
+git clone https://github.com/cuthanhcam/pulsar-ai-hackathon-2025.git
+cd pulsar-ai-hackathon-2025
+```
+
+#### 2️⃣ **Install Dependencies**
 
 ```bash
 npm install
+# or yarn install
+# or pnpm install
 ```
 
-### Step 3: Environment Setup
-
-Copy the example environment file and configure it:
+#### 3️⃣ **Environment Setup**
 
 ```bash
-# Copy the example file
+# Copy environment template
 cp .env.example .env
 
-# Edit .env with your actual values
-# You'll need:
-# 1. PostgreSQL DATABASE_URL
-# 2. NEXTAUTH_SECRET (generate with: openssl rand -base64 32)
-# 3. GEMINI_API_KEY (get free at: https://ai.google.dev/)
+# Edit with your credentials
+code .env  # or nano .env
 ```
 
-**Required Environment Variables:**
-
-| Variable | Description | How to Get |
-|----------|-------------|------------|
-| `DATABASE_URL` | PostgreSQL connection string | Local PostgreSQL or [Supabase](https://supabase.com/) / [Neon](https://neon.tech/) |
-| `NEXTAUTH_SECRET` | Session encryption key | Run: `openssl rand -base64 32` |
-| `GEMINI_API_KEY` | Google AI API key | Free at [ai.google.dev](https://ai.google.dev/) |
-
-See [`env.example`](./env.example) for all available options.
-
-### Step 4: Database Setup
+#### 4️⃣ **Database Configuration**
 
 ```bash
-# Generate Prisma Client
+# Generate Prisma client
 npx prisma generate
 
-# Run migrations
+# Run database migrations
 npx prisma migrate dev --name init
 
-# (Optional) Open Prisma Studio to view database
-npx prisma studio
+# (Optional) Seed with sample data
+npx prisma db seed
 ```
 
-### Step 5: Run Development Server
+#### 5️⃣ **Launch Application**
 
 ```bash
-# Start Next.js dev server with Turbopack
+# Start development server
 npm run dev
 
-# Or use standard webpack
-npm run dev:webpack
+# Or with Turbopack (faster)
+npm run dev:turbo
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+🎉 **Success!** Open [http://localhost:3000](http://localhost:3000) in your browser
 
-### Step 6: Build for Production
+### Environment Configuration
 
-```bash
-# Create optimized production build
-npm run build
+<details>
+<summary><b>📝 Required Environment Variables</b></summary>
 
-# Start production server
-npm start
+```env
+# Database (REQUIRED)
+DATABASE_URL="postgresql://user:password@localhost:5432/pulsarteam"
+DIRECT_URL="postgresql://user:password@localhost:5432/pulsarteam"
+
+# Authentication (REQUIRED)
+NEXTAUTH_SECRET="generate-with: openssl rand -base64 32"
+NEXTAUTH_URL="http://localhost:3000"
+
+# AI Configuration (REQUIRED)
+GEMINI_API_KEY="get-from: https://ai.google.dev/"
+
+# Email (REQUIRED for OTP)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
+SMTP_FROM_NAME="PulsarTeam"
+
+# Vector Database (Optional)
+QDRANT_URL="http://localhost:6333"
+QDRANT_API_KEY="your-qdrant-key"
+
+# Local LLM (Optional)
+OLLAMA_URL="http://localhost:11434"
+OLLAMA_MODEL="mxbai-embed-large"
+
+# Security (REQUIRED)
+ENCRYPTION_KEY="generate-with: openssl rand -hex 32"
+
+# OAuth (Optional)
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+GITHUB_CLIENT_ID="your-github-client-id"
+GITHUB_CLIENT_SECRET="your-github-client-secret"
 ```
 
----
+</details>
 
-## 🎯 Quick Start Guide
-
-### First Time User Flow
-
-1. **Register an Account** (`/register`)
-   ```
-   → Enter email, password, confirm password
-   → Automatically receive 500 free credits
-   → Redirected to dashboard
-   ```
-
-2. **Generate Your First Course** (`/ai-tutor`)
-   ```
-   → Click "Tạo Khóa Học" from header
-   → Enter topic: "React Hooks" or "Python for Beginners"
-   → Complete preferences:
-      - Learning style (Visual, Auditory, Reading, Kinesthetic)
-      - Available time (15-30min, 30-60min, 1-2hr)
-      - Skill level (Beginner, Intermediate, Advanced, Expert)
-      - Goals (Career, Personal, Academic)
-   → AI generates 6-8 modules with 3-5 sections each
-   → Costs ~100 credits (you have 500 free)
-   ```
-
-3. **Explore Mind Map** (`/course/[id]`)
-   ```
-   → See visual representation of your entire course
-   → Modules alternate left-right for better readability
-   → Click any section to start learning
-   → Progress indicators show completion status
-   ```
-
-4. **Learn with AI Assistance** (Section Modal)
-   ```
-   → Read AI-generated markdown content
-   → Highlight any text → Click "Giải thích" for instant explanation
-   → Open AI chat for section-specific questions
-   → Use quick questions for common topics
-   → Take quiz to test knowledge (costs 5 credits)
-   → Mark section complete when done
-   ```
-
-5. **Track Progress** (`/dashboard`)
-   ```
-   → View all your courses
-   → See completion percentage for each
-   → Monitor remaining credits
-   → Beautiful canvas background
-   ```
-
-6. **Need More Credits?** (`/pricing`)
-   ```
-   → View pricing tiers (Free, Pro, Premium, Ultimate)
-   → Toggle USD/VND currency
-   → Choose one-time or monthly (20% discount)
-   → Click "Buy Now" → Info auto-filled if logged in
-   → Complete payment → Credits added instantly
-   ```
-
-### Tips for Best Experience
-
-- 💡 **Use Specific Topics**: "Next.js Server Actions" > "Web Development"
-- 🎯 **Be Honest with Skill Level**: Better content matching
-- 📱 **Mobile Friendly**: Works great on all devices
-- ⚡ **Fast Generation**: Courses generate in ~30 seconds
-- 💬 **Ask AI Anything**: Context-aware within each section
-- 🔖 **Bookmark Sections**: Use mind map for quick navigation
-- ⚙️ **Custom API Key**: Add your own Gemini key in Settings for unlimited use
-
----
-
-## 🎮 Usage Guide
-
-### For Students
-
-1. **Sign Up**: 
-   - Create account with email/password or Google OAuth
-   - Receive 500 free credits to start
-
-2. **Generate Course**: 
-   - Enter a topic (e.g., "Machine Learning", "Web Development")
-   - Complete multi-step preference survey (learning style, time, difficulty)
-   - AI generates personalized 6-8 module curriculum
-
-3. **Explore Mind Map**: 
-   - Visual overview of entire course with ReactFlow
-   - Click any section to start learning
-   - See progress indicators in real-time
-
-4. **Interactive Learning**: 
-   - **Read Content**: AI-generated markdown with code examples
-   - **Text Selection**: Highlight any text and click AI button for instant explanation
-   - **AI Chat**: Ask questions specific to current section
-   - **Quick Questions**: Pre-defined questions for faster learning
-   - **Quizzes**: Test knowledge with AI-generated multiple-choice questions
-
-5. **Track Progress**: 
-   - Mark sections as complete
-   - View overall progress on dashboard with animated background
-   - Monitor credit usage
-
-6. **Manage Profile**:
-   - Update personal information in Settings
-   - Change password securely
-   - Configure custom Gemini API key
-
-7. **Purchase Credits**:
-   - Visit `/pricing` page to view plans
-   - Toggle currency (USD/VND) and billing cycle
-   - Checkout with pre-filled user information
-   - Credits added instantly
-
-### For Administrators
+### Generate Secrets
 
 ```bash
-# Access database
+# Generate NEXTAUTH_SECRET
+node scripts/generate-secret.js
+
+# Check security configuration
+npm run security:check
+
+# Validate environment variables
+npm run env:validate
+```
+
+### Database Setup
+
+```bash
+# Generate Prisma client
+npx prisma generate
+
+# Create database & run migrations
+npx prisma migrate dev
+
+# Open Prisma Studio (Database GUI)
 npx prisma studio
+```
 
-# View all users, courses, progress
-# Manage content, credits, API keys
+### Development Scripts
+
+```bash
+npm run dev          # Start with Turbopack (fast!)
+npm run dev:webpack  # Start with Webpack
+npm run dev:fast     # Turbopack + telemetry disabled
+npm run build        # Production build
+npm run start        # Production server
+npm run lint         # Run ESLint
 ```
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```
-PulsarTeam-AI-Learning/
-├── prisma/
-│   └── schema.prisma           # Database models
+pulsar-ai-hackathon-2025/
 │
-├── public/
-│   └── images/                 # Static assets
+├── 📂 prisma/                    # Database
+│   └── schema.prisma             # Database models
 │
-├── src/
-│   ├── app/
-│   │   ├── page.tsx            # Homepage with team hover effects
-│   │   ├── layout.tsx          # Root layout
-│   │   ├── globals.css         # Global styles (GPU acceleration)
-│   │   ├── not-found.tsx       # Custom 404 page with canvas
-│   │   ├── global-error.tsx    # Global error handler
-│   │   │
-│   │   ├── ai-tutor/           # AI Tutor page
-│   │   │   └── page.tsx
-│   │   │
-│   │   ├── course/
-│   │   │   └── [id]/           # Dynamic course page
-│   │   │       └── page.tsx
-│   │   │
-│   │   ├── dashboard/          # User dashboard with canvas
-│   │   │   └── page.tsx
-│   │   │
-│   │   ├── pricing/            # Pricing & credit packages
-│   │   │   └── page.tsx
-│   │   │
-│   │   ├── login/              # Authentication pages
-│   │   ├── register/
-│   │   ├── settings/           # Profile management with canvas
-│   │   │   └── page.tsx
-│   │   │
-│   │   └── api/                # Backend API routes
-│   │       ├── auth/           # NextAuth & password verify
-│   │       ├── lessons/        # Course CRUD
-│   │       ├── sections/       # Section content & completion
-│   │       ├── quiz/           # Quiz generation
-│   │       ├── chat/           # AI Assistant chat
-│   │       └── user/           # User profile, credits, API key
-│   │           ├── profile/
-│   │           ├── update-profile/
-│   │           ├── update-api-key/
-│   │           └── get-api-key/
-│   │
-│   ├── components/
-│   │   ├── HeaderNew.tsx       # Navigation header with credits
-│   │   ├── TopBanner.tsx       # Announcement banner
-│   │   ├── Footer.tsx          # Footer with social links
-│   │   ├── NetworkCanvas.tsx   # Animated particle background
-│   │   ├── TechCanvas.tsx      # Tech grid background (optimized)
-│   │   ├── CourseVisualization.tsx  # Mind map with ReactFlow
-│   │   ├── SectionModalNew.tsx      # Lesson viewer with text selection AI
-│   │   ├── CoursePreferencesModal.tsx # Multi-step preferences
-│   │   ├── CheckoutModal.tsx   # Credit purchase checkout
-│   │   ├── LoginModal.tsx      # Authentication modal
-│   │   ├── APIKeyErrorModal.tsx # API key setup modal
-│   │   ├── OnboardingWrapper.tsx # First-time user onboarding
-│   │   └── ...
-│   │
-│   ├── lib/
-│   │   ├── auth.ts             # NextAuth config
-│   │   ├── prisma.ts           # Prisma client
-│   │   └── gemini.ts           # AI client
-│   │
-│   ├── types/
-│   │   └── course.ts           # TypeScript interfaces
-│   │
-│   └── styles/
-│       └── design-system.ts    # Design tokens
+├── 📂 public/                    # Static assets
+│   ├── images/                   # Images & icons
+│   └── icon.png                  # Favicon
 │
-├── package.json
-├── tsconfig.json
-├── tailwind.config.ts
-├── next.config.js
-├── .env
-└── README.md
+├── 📂 scripts/                   # Utility scripts
+│   ├── check-security.js         # Security validator
+│   ├── generate-secret.js        # Secret generator
+│   └── generate-env.js           # Env file creator
+│
+├── 📂 src/
+│   ├── 📂 app/                   # Next.js App Router
+│   │   ├── 📂 api/               # API Routes (48 endpoints)
+│   │   │   ├── auth/             # Authentication
+│   │   │   ├── lessons/          # Course management
+│   │   │   ├── quiz/             # Quiz generation
+│   │   │   ├── chat/             # AI assistant
+│   │   │   ├── user/             # User management
+│   │   │   ├── community/        # Social features
+│   │   │   ├── messenger/        # Chat system
+│   │   │   └── admin/            # Admin panel
+│   │   │
+│   │   ├── 📂 (pages)/           # Application pages
+│   │   │   ├── ai-tutor/         # Course generator
+│   │   │   ├── course/[id]/      # Course viewer
+│   │   │   ├── dashboard/        # User dashboard
+│   │   │   ├── pricing/          # Credit packages
+│   │   │   ├── settings/         # User settings
+│   │   │   ├── community/        # Social feed
+│   │   │   ├── admin/            # Admin panel
+│   │   │   ├── login/            # Authentication
+│   │   │   └── register/         # Sign up
+│   │   │
+│   │   ├── globals.css           # Global styles
+│   │   ├── layout.tsx            # Root layout
+│   │   ├── page.tsx              # Homepage
+│   │   ├── not-found.tsx         # 404 page
+│   │   └── global-error.tsx      # Error boundary
+│   │
+│   ├── 📂 components/            # React components (35+)
+│   │   ├── HeaderNew.tsx         # Navigation
+│   │   ├── Footer.tsx            # Footer
+│   │   ├── TopBanner.tsx         # Announcement
+│   │   ├── NetworkCanvas.tsx     # Animated background
+│   │   ├── TechCanvas.tsx        # Tech grid background
+│   │   ├── CourseVisualization.tsx  # Mind map
+│   │   ├── SectionModalNew.tsx   # Lesson viewer
+│   │   ├── CoursePreferencesModal.tsx  # Course wizard
+│   │   ├── CheckoutModal.tsx     # Payment
+│   │   ├── LoginModal.tsx        # Auth modal
+│   │   ├── APIKeyErrorModal.tsx  # API key setup
+│   │   ├── MessengerInbox.tsx    # Chat inbox
+│   │   ├── CommentSection.tsx    # Comments
+│   │   └── ...                   # 20+ more
+│   │
+│   ├── 📂 lib/                   # Utilities
+│   │   ├── auth.ts               # NextAuth config
+│   │   ├── prisma.ts             # Database client
+│   │   ├── gemini.ts             # AI client
+│   │   ├── security.ts           # Security utils
+│   │   ├── email.ts              # Email sender
+│   │   ├── markdown-parser.ts    # Content parser
+│   │   └── adminAuth.ts          # Admin middleware
+│   │
+│   ├── 📂 types/                 # TypeScript types
+│   │   └── course.ts             # Type definitions
+│   │
+│   └── 📂 styles/                # Style utilities
+│
+├── 📄 .env.example               # Environment template
+├── 📄 .eslintrc.json             # ESLint config
+├── 📄 .gitignore                 # Git ignore
+├── 📄 next.config.js             # Next.js config
+├── 📄 tailwind.config.ts         # Tailwind config
+├── 📄 tsconfig.json              # TypeScript config
+├── 📄 package.json               # Dependencies
+├── 📄 LICENSE                    # MIT License
+└── 📄 README.md                  # This file
 ```
 
 ---
 
-## 🧪 API Endpoints
+## ⚙️ Configuration
 
-### Authentication
-- `POST /api/auth/register` - User registration with 500 free credits
-- `POST /api/auth/[...nextauth]` - NextAuth handler (email/password & OAuth)
-- `POST /api/auth/verify-password` - Password verification for sensitive actions
+### Next.js Performance Optimization
 
-### Courses
-- `GET /api/lessons` - List user's courses with progress
-- `GET /api/lessons/[id]` - Get course details with modules & sections
-- `POST /api/lessons/generate` - Generate new AI course (costs credits)
-- `DELETE /api/lessons/[id]/delete` - Delete course (requires password)
+```javascript
+// next.config.js highlights
+{
+  swcMinify: true,                      // Fast minification
+  experimental: {
+    turbo: true,                        // Turbopack for 5x faster builds
+    serverComponentsExternalPackages: [
+      '@google/generative-ai'
+    ]
+  },
+  webpack: (config) => ({
+    cache: { type: 'filesystem' },      // Persistent cache
+    optimization: {
+      splitChunks: { chunks: 'all' },   // Code splitting
+      moduleIds: 'deterministic'
+    }
+  })
+}
+```
 
-### Sections
-- `GET /api/sections/[id]` - Get section content (markdown format)
-- `POST /api/sections/[id]/complete` - Mark section complete & update progress
-
-### Quiz
-- `POST /api/quiz/generate` - Generate AI quiz (costs 5 credits)
-
-### AI Chat
-- `POST /api/chat` - Send message to AI Assistant (contextual responses)
-  - Supports text selection explanations
-  - Section-specific context
-  - Quick questions
-
-### User Management
-- `GET /api/user/profile` - Get user profile (name, email, phone, credits)
-- `POST /api/user/update-profile` - Update profile info & password
-- `POST /api/user/update-api-key` - Update custom Gemini API key
-- `GET /api/user/get-api-key` - Check if user has custom API key
-
-### Credits (Future Implementation)
-- `POST /api/credits/purchase` - Process credit purchase
-- `GET /api/credits/history` - Get credit transaction history
-
----
-
-## 🎓 Team PulsarTeam
-
-### Development Team
-
-| Name | Role | Responsibilities |
-|------|------|------------------|
-| **Trương Dương Bảo Minh** | Frontend Developer & AI Engineer | UI/UX design, AI integration, frontend architecture |
-| **Cù Thanh Cầm** | Project Manager & Backend Developer | Project planning, team coordination, documentation |
-| **Trần Tuấn Anh** | Backend Developer & Data Data Analytics | Database design, API development, authentication |
-
----
-
-## 🔧 Configuration
-
-### Tailwind Custom Theme
+### Tailwind Theme Customization
 
 ```javascript
 // tailwind.config.ts
-theme: {
-  extend: {
-    colors: {
-      zinc: { /* Factory.ai dark palette */ },
-      orange: { /* Primary accent color */ }
-    },
-    animation: {
-      'spin': 'spin 1s linear infinite',
-      'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+{
+  theme: {
+    extend: {
+      colors: {
+        zinc: { /* Dark theme palette */ },
+        orange: { 500: '#f97316' }      // Brand color
+      },
+      animation: {
+        'gradient': 'gradient 8s linear infinite',
+        'float': 'float 3s ease-in-out infinite'
+      }
     }
   }
 }
 ```
 
-### Next.js Performance Optimizations
-
-```javascript
-// next.config.js
-experimental: {
-  turbo: true,              // Turbopack for faster builds
-  optimizePackageImports: ['lucide-react']
-}
-```
-
----
-
-## 📊 Database Schema
-
-### Key Models
+### Prisma Configuration
 
 ```prisma
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  password      String
-  phone         String?   # Phone number for checkout
-  credits       BigInt    @default(500)  # 500 free credits for new users
-  geminiApiKey  String?   # Custom API key support
-  lessons       Lesson[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
-model Lesson {
-  id            String    @id @default(cuid())
-  title         String
-  description   String
-  topic         String
-  difficulty    String
-  userId        String
-  modules       Module[]
-  mindmap       Mindmap?
-}
-
-model Module {
-  id            String    @id @default(cuid())
-  title         String
-  order         Int
-  lessonId      String
-  sections      Section[]
-}
-
-model Section {
-  id            String    @id @default(cuid())
-  title         String
-  content       String
-  order         Int
-  completed     Boolean   @default(false)
-  moduleId      String
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 ```
 
 ---
 
-## 🚀 Performance
+## 📚 API Documentation
 
-### Optimizations Implemented
+### Authentication Flow
 
-- ✅ **Turbopack**: 5x faster builds with experimental mode
-- ✅ **Dynamic Imports**: Code splitting for `TechCanvas`, `NetworkCanvas`, and heavy components
-- ✅ **Deferred Canvas Loading**: Canvas backgrounds load after content with `setTimeout`
-- ✅ **GPU Acceleration**: CSS properties (`transform: translateZ(0)`, `will-change`, `backface-visibility`)
-- ✅ **Smooth Scrolling**: Hardware-accelerated scrolling with `WebkitOverflowScrolling: 'touch'`
-- ✅ **Image Optimization**: Next.js automatic image optimization with lazy loading
-- ✅ **API Caching**: Revalidation strategies for static content
-- ✅ **Database Indexing**: Optimized queries with Prisma
-- ✅ **SSR/SSG**: Server-side rendering where beneficial
-- ✅ **Hydration Fix**: Consistent number formatting (`toLocaleString('en-US')`)
-- ✅ **Event Optimization**: Proper `stopPropagation()` for nested interactive elements
-- ✅ **React Re-render Prevention**: Fixed infinite loops with proper dependency arrays
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as Client
+    participant A as API
+    participant D as Database
 
-### Performance Metrics
-
-| Metric | Target | Achieved |
-|--------|--------|----------|
-| First Contentful Paint | < 1.5s | ✅ 1.2s |
-| Time to Interactive | < 3.0s | ✅ 2.7s |
-| API Response Time | < 500ms | ✅ 380ms |
-| Build Time | < 60s | ✅ 45s |
-
----
-
-## ✨ Feature Highlights
-
-### 📝 Text Selection AI Explanation
-
-One of the most innovative features is the **intelligent text selection** system:
-
-**How it works:**
-1. While reading lesson content, select (highlight) any text
-2. A floating AI button appears next to your selection with sparkle animation
-3. Click the "Giải thích" (Explain) button
-4. AI Assistant automatically opens (if closed) and provides detailed explanation
-5. Context includes the entire section content for better understanding
-
-**Technical Implementation:**
-```typescript
-// Selection detection with position tracking
-const handleTextSelection = () => {
-  const selection = window.getSelection()
-  const text = selection?.toString().trim()
-  
-  if (text && text.length > 0) {
-    const range = selection?.getRangeAt(0)
-    const rect = range?.getBoundingClientRect()
-    
-    // Show floating button at selection position
-    setSelectionPosition({
-      x: rect.right + 10,
-      y: rect.top + window.scrollY
-    })
-  }
-}
-
-// AI explanation with context
-const handleExplainSelection = async (e: React.MouseEvent) => {
-  e.preventDefault()
-  e.stopPropagation()
-  
-  const userMessage = `Giải thích đoạn này: "${selectedText}"`
-  
-  // Send to AI with full section context
-  const response = await fetch('/api/chat', {
-    method: 'POST',
-    body: JSON.stringify({
-      message: userMessage,
-      context: `Section: ${section.title}\nCourse: ${course.title}\nFull content...`,
-    }),
-  })
-}
+    U->>C: Enter credentials
+    C->>A: POST /api/auth/register
+    A->>D: Create user + 500 credits
+    D-->>A: User created
+    A->>C: Send OTP email
+    U->>C: Enter OTP
+    C->>A: POST /api/auth/verify-otp
+    A->>D: Mark email verified
+    D-->>A: Success
+    A-->>C: JWT token
+    C-->>U: Redirect to dashboard
 ```
 
-**Benefits:**
-- ⚡ Instant explanations without leaving the lesson
-- 🎯 Context-aware responses based on current section
-- 💬 Natural language explanations from Gemini AI
-- 🎨 Beautiful UI with smooth animations and professional icons
+### Course Generation Flow
 
-### 💳 Smart Pricing System
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant A as API
+    participant AI as Gemini AI
+    participant D as Database
 
-**Multi-Currency Support:**
-- Toggle between USD and VND with real-time conversion
-- Monthly subscriptions offer 20% discount vs one-time purchase
-- Four pricing tiers: Free (500), Pro (5,000), Premium (20,000), Ultimate (100,000)
-
-**Intelligent Checkout:**
-- Detects logged-in users and pre-fills information
-- Real-time validation for all form fields
-- Loading states with spinner animations
-- Success confirmation with credit display
-
-**Features by Tier:**
-| Tier | Credits | Price (USD) | Special Features |
-|------|---------|-------------|------------------|
-| Free | 500 | $0 | Perfect for trying out |
-| Pro | 5,000 | $4.99 | Most popular choice |
-| Premium | 20,000 | $14.99 | Best value |
-| Ultimate | 100,000 | $49.99 | GPT-5 access + custom AI model |
-
-### 🎨 Animated Canvas Backgrounds
-
-**Pages with Canvas:**
-- Dashboard (`/dashboard`)
-- Pricing (`/pricing`)
-- Settings (`/settings`)
-- 404 Error Page (`/not-found`)
-
-**Optimization Strategy:**
-```typescript
-// Deferred loading for better performance
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setShowCanvas(true)
-  }, 100) // Load after content renders
-  
-  return () => clearTimeout(timer)
-}, [])
-
-// Dynamic import with SSR disabled
-const TechCanvas = dynamic(() => import('@/components/TechCanvas'), {
-  ssr: false,
-  loading: () => null
-})
+    U->>A: POST /api/lessons/generate
+    A->>D: Check credits (≥30)
+    D-->>A: Credits OK
+    A->>AI: Generate course structure
+    AI-->>A: Markdown content
+    A->>D: Save course + deduct credits
+    D-->>A: Course ID
+    A-->>U: Redirect to course
 ```
 
-**Glass Morphism Design:**
-- `backdrop-blur-md` for frosted glass effect
-- Transparent backgrounds (`bg-zinc-900/20`)
-- Border gradients with orange accents
-- Smooth hover transitions
+### Credit System
 
----
+```typescript
+// Credit costs
+COURSE_GENERATION = 30 credits
+QUIZ_GENERATION = 10 credits
+COURSE_CLONE = 5 credits
+CHAT_MESSAGE = 0 credits (free)
 
-## 🔐 Security
-
-### Implemented Measures
-
-- **Password Hashing**: bcrypt with salt rounds
-- **JWT Tokens**: Secure session management
-- **CSRF Protection**: Built into NextAuth.js
-- **SQL Injection Prevention**: Prisma parameterized queries
-- **XSS Protection**: React automatic escaping
-- **Rate Limiting**: API endpoint throttling (planned)
-- **Environment Variables**: Sensitive data in .env
-
----
-
-## 🌐 Deployment
-
-### Recommended Platforms
-
-1. **Vercel** (Recommended)
-   - Native Next.js support
-   - Automatic deployments
-   - Edge network CDN
-
-2. **Railway/Render**
-   - PostgreSQL hosting
-   - Environment management
-   - Auto-scaling
-
-### Deployment Steps
-
-```bash
-# 1. Build project
-npm run build
-
-# 2. Set environment variables on platform
-# 3. Deploy
-vercel --prod
-# or
-railway up
+// User starts with 500 free credits
+// Purchase packages: 1,500 / 4,000 / 35,000
 ```
 
 ---
 
-## 🐛 Troubleshooting
+## 🎨 UI Components
 
-### Common Issues & Solutions
+### Component Library
 
-#### 1. Hydration Errors
+| Component             | Purpose             | Tech               |
+| --------------------- | ------------------- | ------------------ |
+| `CourseVisualization` | Mind map display    | ReactFlow          |
+| `SectionModalNew`     | Lesson viewer       | React Modal        |
+| `CheckoutModal`       | Payment form        | React Hook Form    |
+| `MessengerInbox`      | Chat interface      | WebSocket ready    |
+| `CommentSection`      | Social comments     | Nested threading   |
+| `TechCanvas`          | Animated background | HTML Canvas        |
+| `NetworkCanvas`       | Particle effects    | Canvas + Animation |
 
-**Problem:** `Error: Text content does not match server-rendered HTML`
+### Design System
 
-**Cause:** Number formatting differs between server and client (e.g., `toLocaleString('vi-VN')` produces different results)
+<table>
+<tr>
+<td>
 
-**Solution:**
-```typescript
-// ❌ Bad: Causes hydration error
-{price.toLocaleString('vi-VN')} VNĐ
+**Colors**
 
-// ✅ Good: Consistent formatting
-{price.toLocaleString('en-US')} VNĐ
-```
-
-#### 2. Infinite Re-render Loop
-
-**Problem:** Page continuously reloads, API calls repeatedly
-
-**Cause:** `useEffect` dependency array contains mutable objects (like `session` object)
-
-**Solution:**
-```typescript
-// ❌ Bad: session object changes reference every render
-useEffect(() => {
-  fetchData()
-}, [session])
-
-// ✅ Good: Use primitive values
-useEffect(() => {
-  fetchData()
-}, [session?.user?.id])
-```
-
-#### 3. Prisma Generate Error (EPERM)
-
-**Problem:** `EPERM: operation not permitted, rename '...query_engine-windows.dll.node...'`
-
-**Cause:** Dev server is running and locking Prisma client files
-
-**Solution:**
-```bash
-# 1. Stop dev server
-Ctrl + C
-
-# 2. Generate Prisma client
-npx prisma generate
-
-# 3. Restart dev server
-npm run dev
-```
-
-#### 4. Invalid Element Type Error
-
-**Problem:** `Error: Element type is invalid... Check the render method of CoursePreferencesModal`
-
-**Cause:** Importing non-existent Lucide React icons
-
-**Solution:**
-```typescript
-// ❌ Bad: These icons don't exist
-import { BookOpenText, Timer, PuzzleIcon } from 'lucide-react'
-
-// ✅ Good: Use correct icon names
-import { Book, AlarmClock, Puzzle } from 'lucide-react'
-```
-
-**Verified Lucide Icons:**
-- `Book`, `AlarmClock`, `Puzzle`, `Clock`, `Sprout`
-- `Target`, `Sparkles`, `Clipboard`, `Grid3x3`
-- `Search`, `GraduationCap`, `Bot`, `Trophy`
-- `ThumbsUp`, `TrendingUp`, `Settings`, `Zap`
-
-#### 5. Canvas Not Loading
-
-**Problem:** Canvas background doesn't appear or causes performance issues
-
-**Solution:**
-```typescript
-// Use dynamic import with SSR disabled
-const TechCanvas = dynamic(() => import('@/components/TechCanvas'), {
-  ssr: false,
-  loading: () => null
-})
-
-// Defer loading
-useEffect(() => {
-  const timer = setTimeout(() => setShowCanvas(true), 100)
-  return () => clearTimeout(timer)
-}, [])
-```
-
-#### 6. Text Selection Button Not Working
-
-**Problem:** Clicking "Giải thích" button doesn't trigger AI explanation
-
-**Cause:** Event propagation causes modal overlay click event to fire
-
-**Solution:**
-```typescript
-// Add stopPropagation at multiple levels
-<div 
-  onClick={(e) => e.stopPropagation()}
-  onMouseDown={(e) => e.stopPropagation()}
->
-  <button
-    onClick={handleExplainSelection}
-    onMouseDown={(e) => e.stopPropagation()}
-  >
-```
-
-#### 7. Scroll Performance Issues
-
-**Problem:** Scrolling in modals is laggy or janky
-
-**Solution:**
 ```css
-/* Global CSS - GPU acceleration */
-* {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-}
+Primary:   #f97316 (Orange)
+Background: #09090b (Zinc-950)
+Surface:   #18181b (Zinc-900)
+Border:    #27272a (Zinc-800)
+Text:      #fafafa (Zinc-50)
+```
 
-.scrollable {
-  transform: translateZ(0);
-  will-change: scroll-position;
-  -webkit-overflow-scrolling: touch;
-  backface-visibility: hidden;
-}
+</td>
+<td>
+
+**Typography**
+
+```css
+Font Family: Inter, system-ui
+Headings:    bold, tracking-tight
+Body:        normal, leading-relaxed
+Code:        'Fira Code', monospace
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+**Spacing**
+
+```css
+Base unit: 4px (0.25rem)
+Small:  8px  (0.5rem)
+Medium: 16px (1rem)
+Large:  24px (1.5rem)
+XL:     32px (2rem)
+```
+
+</td>
+<td>
+
+**Effects**
+
+```css
+Shadow:        shadow-2xl
+Blur:          backdrop-blur-md
+Radius:        rounded-xl
+Transition:    duration-300
+```
+
+</td>
+</tr>
+</table>
+
+---
+
+## � Security
+
+### Security Features
+
+✅ **Authentication**
+
+- NextAuth.js with JWT tokens
+- bcrypt password hashing (10 salt rounds)
+- Secure cookie configuration
+- Session timeout management
+
+✅ **Authorization**
+
+- Role-based access control (User/Admin)
+- API route protection
+- Password re-verification for sensitive actions
+- Custom API key encryption support
+
+✅ **Data Protection**
+
+- SQL injection prevention (Prisma)
+- XSS protection (React escaping)
+- CSRF tokens (NextAuth)
+- Secure environment variables
+
+✅ **API Security**
+
+- Input validation
+- Error message sanitization
+- Request timeouts (240s)
+- CORS configuration
+
+### Security Scripts
+
+```bash
+# Check security configuration
+npm run security:check
+
+# Generate secure secret
+npm run security:generate-secret
+
+# Audit dependencies
+npm run security:audit
+
+# Auto-fix vulnerabilities
+npm run security:audit-fix
+```
+
+### Security Checklist
+
+<details>
+<summary><b>Production Security Checklist</b></summary>
+
+- [ ] NEXTAUTH_SECRET is 32+ characters
+- [ ] ENCRYPTION_KEY is 64 character hex
+- [ ] DATABASE_URL uses SSL in production
+- [ ] GEMINI_API_KEY is never committed to git
+- [ ] Secure cookies enabled (https only)
+- [ ] Rate limiting configured
+- [ ] CORS properly configured
+- [ ] Error messages don't leak sensitive info
+- [ ] Dependencies are up to date
+- [ ] TypeScript strict mode enabled
+- [ ] Environment variables validated on startup
+- [ ] Backup strategy in place
+
+</details>
+
+---
+
+## 🧪 Testing
+
+### Test Coverage Status
+
+> ⚠️ **Note**: Testing infrastructure is currently in development
+
+**Planned Test Coverage:**
+
+- [ ] Unit tests with Jest
+- [ ] Integration tests for API routes
+- [ ] E2E tests with Playwright
+- [ ] Component tests with React Testing Library
+- [ ] Performance tests with Lighthouse
+
+### Running Tests (Coming Soon)
+
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Coverage report
+npm run test:coverage
+
+# Watch mode
+npm run test:watch
 ```
 
 ---
 
-## 📝 License
+## 📦 Deployment
 
-This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE) file for details.
+### Deploy to Vercel (Recommended)
 
-**Educational Purpose**: Developed for the K-Tech Innovation Challenge 2025.
+<div align="center">
 
-### Key Points:
-- ✅ Free to use, modify, and distribute
-- ✅ Commercial use allowed
-- ✅ Attribution to PulsarTeam appreciated
-- ✅ No warranty provided
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/cuthanhcam/pulsar-ai-hackathon-2025)
 
-Copyright © 2025 PulsarTeam. All rights reserved.
+</div>
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel --prod
+
+# Set environment variables in Vercel dashboard
+```
+
+### Deploy to Railway
+
+```bash
+# Install Railway CLI
+npm i -g @railway/cli
+
+# Login
+railway login
+
+# Deploy
+railway up
+
+# Add PostgreSQL
+railway add postgresql
+
+# Set environment variables
+railway variables
+```
+
+### Docker Deployment (Coming Soon)
+
+```bash
+# Build image
+docker build -t pulsarteam-ai .
+
+# Run container
+docker run -p 3000:3000 pulsarteam-ai
+
+# Docker Compose
+docker-compose up -d
+```
+
+### Environment Variables for Production
+
+```bash
+# Essential production variables
+NEXTAUTH_SECRET="<strong-secret>"
+NEXTAUTH_URL="https://yourdomain.com"
+DATABASE_URL="<production-db-url>"
+GEMINI_API_KEY="<your-key>"
+NODE_ENV="production"
+```
+
+### Pre-deployment Checklist
+
+- [ ] Run `npm run build` successfully
+- [ ] All environment variables set
+- [ ] Database migrations applied
+- [ ] API keys configured
+- [ ] CORS settings reviewed
+- [ ] Error tracking enabled (optional)
+- [ ] Analytics configured (optional)
+- [ ] Domain & SSL configured
+- [ ] Backup strategy in place
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please:
+We welcome contributions from the community! Whether you're a developer, designer, educator, or just passionate about AI-powered education, there are many ways to get involved.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### 🌟 How to Contribute
 
----
+1. **🍴 Fork the Repository**
 
-## 📞 Contact
+   ```bash
+   git clone https://github.com/cuthanhcam/pulsar-ai-hackathon-2025.git
+   cd pulsar-ai-hackathon-2025
+   ```
 
-**PulsarTeam** - K-Tech Innovation Challenge 2025
+2. **🌿 Create a Feature Branch**
 
-- 📧 Email: truongminh0949@gmail.com
-- 🌐 Website: [Coming Soon]
-- 📱 FaceBook : [@PulsarTeamDev](https://www.facebook.com/m.minb1805)
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
 
----
+3. **💡 Make Your Changes**
 
-## 🙏 Acknowledgments
+   - Follow our coding standards
+   - Add tests for new features
+   - Update documentation as needed
 
-- **Google Gemini AI** - For powerful LLM capabilities and free API access
-- **Vercel** - For Next.js framework, Turbopack, and hosting solutions
-- **Prisma** - For elegant database ORM and type safety
-- **Lucide** - For beautiful, consistent icon library
-- **ReactFlow** - For powerful mind map visualization
-- **Factory.ai** - Design inspiration for dark theme
-- **Augment Code** - UI/UX inspiration for developer experience
-- **K-Tech** - For organizing this innovation challenge
-- **Open Source Community** - For amazing tools and libraries
+4. **✅ Test Your Changes**
 
----
+   ```bash
+   npm run dev
+   npm run build
+   npm run lint
+   ```
 
-## 📋 Changelog
+5. **📝 Commit with Clear Messages**
 
-### Version 2.0.0 (Current) - Major Feature Update
+   ```bash
+   git commit -m "feat: add amazing new feature"
+   ```
 
-**🆕 New Features:**
-- ✨ Text selection AI explanation with floating button
-- 💳 Complete pricing page with USD/VND currency toggle
-- 🛒 Checkout modal with user info pre-fill
-- ⚙️ Profile management in settings (name, email, phone, password)
-- 🎨 Canvas backgrounds on dashboard, pricing, settings, 404
-- 🎭 Team member hover effects on homepage
-- 🚫 Custom 404 error page with professional design
+6. **🚀 Push and Create PR**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
 
-**🔧 Improvements:**
-- ⚡ GPU-accelerated smooth scrolling
-- 🎯 Deferred canvas loading for better performance
-- 🔄 Fixed infinite re-render loops in multiple components
-- 🎨 Professional Lucide icons throughout the app
-- 📱 Better mobile responsiveness
-- 🌐 Hydration error fixes with consistent formatting
-- 🎭 Glass morphism effects on pricing cards and modals
+### 🎯 Ways to Contribute
 
-**🐛 Bug Fixes:**
-- Fixed event propagation in text selection button
-- Resolved Prisma client generation conflicts
-- Fixed invalid Lucide icon imports
-- Corrected number formatting hydration issues
-- Fixed session object infinite loop in useEffect
+- 🐛 **Report Bugs**: Found an issue? Let us know!
+- 💡 **Suggest Features**: Have an idea? We'd love to hear it!
+- 📚 **Improve Documentation**: Help make our docs clearer
+- 🎨 **UI/UX Improvements**: Make the platform more beautiful
+- � **Code Contributions**: Add new features or fix bugs
+- 🌍 **Translations**: Help make education accessible globally
 
-**🗄️ Database Changes:**
-- Added `phone` field to User model
-- Updated default credits from 1000 to 500
-- Added user profile update API endpoints
+### 📋 Development Guidelines
 
-### Version 1.0.0 - Initial Release
+- Follow TypeScript best practices
+- Use Tailwind CSS for styling
+- Write meaningful commit messages
+- Add JSDoc comments for functions
+- Ensure responsive design
+- Test on multiple browsers
 
-**Core Features:**
-- AI course generation with Google Gemini
-- Interactive mind maps with ReactFlow
-- Section-based learning with progress tracking
-- AI Assistant chat within lessons
-- Quiz generation system
-- User authentication with NextAuth.js
-- Credit system for AI operations
-- Dashboard with course analytics
+### 🏆 Recognition
+
+All contributors will be recognized in our project documentation. Thank you for helping build the future of AI-powered education!
 
 ---
 
-## 📚 Additional Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Prisma Documentation](https://www.prisma.io/docs)
-- [Google Gemini AI](https://ai.google.dev/)
-- [Tailwind CSS](https://tailwindcss.com/docs)
-- [ReactFlow](https://reactflow.dev/)
-
----
+## 📄 License
 
 <div align="center">
 
-**Built with ❤️ by PulsarTeam**
+---
 
-*Transforming Education Through AI Innovation*
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE) file for details.
+
+**Copyright © 2025 Pulsar AI Learning Platform Contributors. All rights reserved.**
+
+---
+
+### 📊 Project Statistics
+
+![GitHub Stars](https://img.shields.io/github/stars/cuthanhcam/pulsar-ai-hackathon-2025?style=for-the-badge&logo=github&color=FFD700)
+![GitHub Forks](https://img.shields.io/github/forks/cuthanhcam/pulsar-ai-hackathon-2025?style=for-the-badge&logo=github&color=32CD32)
+![GitHub Issues](https://img.shields.io/github/issues/cuthanhcam/pulsar-ai-hackathon-2025?style=for-the-badge&logo=github&color=FF6B6B)
+![GitHub Pull Requests](https://img.shields.io/github/issues-pr/cuthanhcam/pulsar-ai-hackathon-2025?style=for-the-badge&logo=github&color=4169E1)
+
+---
+
+### 🔗 Quick Links
+
+**[🏠 Homepage](https://github.com/cuthanhcam/pulsar-ai-hackathon-2025)** •
+**[🚀 Get Started](#-getting-started)** •
+**[📚 Documentation](#-table-of-contents)** •
+**[🤝 Contribute](#-contributing)** •
+**[📄 License](#-license)**
+
+---
+
+<sub>🚀 Transforming Education Through AI Innovation • Built with ❤️ by the Open Source Community</sub>
+
+**[⬆ Back to Top](#-pulsar-ai-learning-platform)**
 
 </div>
