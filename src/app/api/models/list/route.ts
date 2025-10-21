@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { getApiKey } from '@/lib/encryption'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -21,10 +22,14 @@ export async function GET(req: Request) {
       select: { geminiApiKey: true }
     })
 
-    const apiKey = user?.geminiApiKey || process.env.GEMINI_API_KEY
+    // 🔒 Get user's API key (auto-decrypt if encrypted, or use as-is if plain text)
+    if (!user?.geminiApiKey) {
+      return NextResponse.json({ error: 'Gemini API Key not configured. Please add it in Settings.' }, { status: 400 })
+    }
 
+    const apiKey = await getApiKey(user.geminiApiKey)
     if (!apiKey) {
-      return NextResponse.json({ error: 'No API key configured' }, { status: 400 })
+      return NextResponse.json({ error: 'Failed to retrieve API key' }, { status: 400 })
     }
 
     const genAI = new GoogleGenerativeAI(apiKey)

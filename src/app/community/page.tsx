@@ -162,14 +162,32 @@ export default function CommunityPage() {
 
   const handleReact = useCallback(async (postId: string, reactionType: ReactionType) => {
     try {
-      await fetch(`/api/community/posts/${postId}/react`, {
+      // Optimistic update - update UI immediately
+      setPosts(prevPosts => 
+        prevPosts.map(post => 
+          post.id === postId 
+            ? {
+                ...post,
+                userReaction: post.userReaction === reactionType ? null : reactionType
+              }
+            : post
+        )
+      )
+
+      const res = await fetch(`/api/community/posts/${postId}/react`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reactionType })
       })
-      fetchPosts()
+
+      if (!res.ok) {
+        // Revert on error
+        fetchPosts()
+      }
     } catch (error) {
       console.error('Error reacting:', error)
+      // Revert on error
+      fetchPosts()
     }
   }, [fetchPosts])
 

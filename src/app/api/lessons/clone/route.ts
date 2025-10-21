@@ -51,15 +51,45 @@ export async function POST(req: NextRequest) {
     if (!isOwnCourse) {
       console.log('[API] Cloning someone else\'s course - checking credits')
       
-      // Get user's current credits
-      const user = await prisma.user.findUnique({
+      // Get user's current credits - auto-create if not exists
+      let user = await prisma.user.findUnique({
         where: { id: session.user.id },
-        select: { credits: true }
+        select: { credits: true, id: true }
       })
 
       if (!user) {
-        console.error('[API] User not found:', session.user.id)
-        return NextResponse.json({ error: 'User not found' }, { status: 404 })
+        console.log('[API] User not found, auto-creating:', session.user.id)
+        try {
+          const userEmail = session.user.email || `user-${session.user.id}@app.local`
+          
+          // Check if email already exists (OAuth conflict)
+          let existingUser = await prisma.user.findUnique({
+            where: { email: userEmail },
+            select: { id: true, credits: true }
+          })
+
+          if (existingUser) {
+            user = existingUser
+            console.log('[API] Using existing user with email:', userEmail)
+          } else {
+            // Create new user
+            user = await prisma.user.create({
+              data: {
+                id: session.user.id,
+                email: userEmail,
+                name: session.user.name || 'User',
+                password: '',
+                role: 'user',
+                credits: 500
+              },
+              select: { id: true, credits: true }
+            })
+            console.log('[API] User auto-created successfully')
+          }
+        } catch (createError) {
+          console.error('[API] Failed to auto-create user:', createError instanceof Error ? createError.message : createError)
+          return NextResponse.json({ error: 'User setup failed' }, { status: 500 })
+        }
       }
 
       const currentCredits = Number(user.credits)

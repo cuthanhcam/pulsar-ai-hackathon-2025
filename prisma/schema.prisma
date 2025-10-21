@@ -87,16 +87,17 @@ model Lesson {
 }
 
 model Module {
-  id            String    @id @default(cuid())
+  id            String              @id @default(cuid())
   lessonId      String
   title         String
   description   String?
   order         Int
-  completed     Boolean   @default(false)
-  createdAt     DateTime  @default(now())
+  completed     Boolean             @default(false)
+  createdAt     DateTime            @default(now())
   
-  lesson        Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lesson        Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   sections      Section[]
+  embeddings    SectionEmbedding[]
   
   @@index([lessonId])
   @@index([lessonId, order])
@@ -110,12 +111,37 @@ model Section {
   order         Int
   duration      Int       @default(10)
   completed     Boolean   @default(false)
+  isGenerating  Boolean   @default(false)
   createdAt     DateTime  @default(now())
   
-  module        Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  module        Module             @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  embeddings    SectionEmbedding[]
   
   @@index([moduleId])
   @@index([moduleId, order])
+}
+
+// Track embeddings for RAG system
+model SectionEmbedding {
+  id          String   @id @default(cuid())
+  sectionId   String
+  moduleId    String
+  courseId    String
+  userId      String
+  vectorId    String   // UUID in Qdrant
+  contentHash String   // MD5 hash to detect content changes
+  chunkIndex  Int      // Index of chunk within section
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  module  Module  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@index([sectionId])
+  @@index([moduleId])
+  @@index([courseId])
+  @@index([userId])
+  @@index([contentHash])
 }
 
 model Mindmap {

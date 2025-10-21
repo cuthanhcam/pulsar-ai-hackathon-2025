@@ -249,6 +249,17 @@ export default function MessengerInbox() {
                     </div>
                   )}
                 </div>
+
+                {/* Facebook Messenger Button */}
+                <a
+                  href="https://m.me/756498440889581"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 flex items-center justify-center gap-2 w-full py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full transition-all shadow-md hover:shadow-lg"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Liên hệ qua Messenger</span>
+                </a>
               </div>
 
               {/* Content - Facebook Style */}

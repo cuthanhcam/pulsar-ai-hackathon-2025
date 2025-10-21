@@ -3,6 +3,37 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { qdrant } from '@/lib/qdrant'
+import { getApiKey } from '@/lib/encryption'
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
+// Embed text using Ollama API
+async function embedText(text: string) {
+  try {
+    // Use Tailscale URL if available, fallback to localhost
+    const ollamaUrl = process.env.OLLAMA_URL || 'http://127.0.0.1:11434'
+    const res = await fetch(`${ollamaUrl}/api/embed`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: process.env.OLLAMA_MODEL || "mxbai-embed-large",
+        input: text,
+      }),
+    })
+
+    if (!res.ok) {
+      throw new Error(`Ollama embed API returned ${res.status}`)
+    }
+
+    const data = await res.json()
+    return data.embeddings?.[0] || data.embedding || []
+  } catch (error) {
+    console.error('[Chat API] Embedding failed:', error)
+    return null
+  }
+}
 
 export async function POST(req: Request) {
   console.log('[Chat API] === New chat request ===')
@@ -24,13 +55,21 @@ export async function POST(req: Request) {
       select: { geminiApiKey: true }
     })
 
-    // Use user's API key or fall back to environment variable
-    const apiKey = user?.geminiApiKey || process.env.GEMINI_API_KEY
-
-    if (!apiKey || apiKey === 'your-gemini-api-key-here') {
-      console.log('[Chat API] ❌ No API key configured')
+    if (!user?.geminiApiKey) {
+      console.log('[Chat API] ❌ No API key found')
       return NextResponse.json(
-        { error: 'Gemini API Key not configured. Please add it in Settings or configure GEMINI_API_KEY environment variable.' },
+        { error: 'Gemini API Key not configured. Please add it in Settings.' },
+        { status: 400 }
+      )
+    }
+
+    // 🔒 Get API key (auto-decrypt if encrypted, or use as-is if plain text)
+    const apiKey = await getApiKey(user.geminiApiKey)
+
+    if (!apiKey) {
+      console.log('[Chat API] ❌ Failed to get API key')
+      return NextResponse.json(
+        { error: 'Failed to retrieve API key' },
         { status: 400 }
       )
     }
@@ -49,7 +88,7 @@ export async function POST(req: Request) {
 
     // Initialize Gemini AI with API key
     const genAI = new GoogleGenerativeAI(apiKey)
-    const generativeModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
+    const generativeModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' })
 
     // Get lesson or section context if lessonId provided
     let lessonContext = ''
@@ -133,16 +172,59 @@ You are a helpful AI tutor. Please answer the student's question to the best of 
       ).join('\n')
     }
 
+    // RAG: Retrieve relevant context from Qdrant
+    let ragContext = ''
+    
+    // Skip RAG if Ollama URL is not configured (e.g., on production without Tailscale)
+    if (process.env.OLLAMA_URL) {
+      try {
+        console.log('[Chat API] 🔍 Embedding user query for RAG...')
+        const queryEmbedding = await embedText(message)
+
+        if (queryEmbedding && queryEmbedding.length > 0) {
+          console.log('[Chat API] 📚 Searching Qdrant for similar chunks...')
+          const results = await qdrant.search('pulsar_lessons', {
+            vector: queryEmbedding,
+            limit: 5,
+            filter: {
+              must: [
+                { key: 'userId', match: { value: session.user.id } },
+                ...(lessonId ? [{ key: 'courseId', match: { value: lessonId } }] : []),
+              ],
+            },
+          })
+
+          if (results.length > 0) {
+            ragContext = results
+              .map((r: any) => r.payload.text)
+              .join('\n---\n')
+            console.log(`[Chat API] ✅ Retrieved ${results.length} context chunks from Qdrant`)
+          } else {
+            console.log('[Chat API] ℹ️  No relevant context found in Qdrant.')
+          }
+        } else {
+          console.log('[Chat API] ⚠️ Embedding failed, skipping RAG')
+        }
+      } catch (ragError) {
+        console.error('[Chat API] ⚠️ RAG retrieval failed (non-critical):', ragError)
+        // Don't fail the request if RAG fails
+      }
+    } else {
+      console.log('[Chat API] ℹ️ OLLAMA_URL not configured, skipping RAG (using standard chat mode)')
+    }
+
     console.log('[Chat API] 🤖 Calling Gemini API...')
-    const prompt = `You are an expert AI tutor. You are friendly, patient, and skilled at explaining complex concepts in simple terms.
+    const prompt = `You are an expert AI tutor. You are friendly, patient, and skilled at explaining complex concepts in simple terms. Be accurate, concise, and grounded in the provided context.
 
 ${lessonContext}
+
+${ragContext ? `\nRetrieved Context (from student's course materials):\n${ragContext}\n` : ''}
 
 ${conversationHistory ? `Previous conversation:\n${conversationHistory}\n` : ''}
 
 Student's question: ${message}
 
-Please provide a helpful, clear, and educational response. If the question is related to the lesson content, reference it. If it's a general question, provide accurate information and guidance.
+If the answer exists in the retrieved context, use it directly and cite it. If not, provide a general educational response and politely note that this specific topic might not be covered in the current course materials.
 
 Keep your response concise (2-4 paragraphs) but informative.`
 
