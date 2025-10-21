@@ -41,7 +41,7 @@ Transform traditional learning into personalized, adaptive experiences powered b
 - [⚙️ Configuration](#️-configuration)
 - [📚 API Documentation](#-api-documentation)
 - [🎨 UI Components](#-ui-components)
-- [� Security](#-security)
+- [🔒 Security](#-security)
 - [🧪 Testing](#-testing)
 - [📦 Deployment](#-deployment)
 - [🤝 Contributing](#-contributing)
@@ -64,7 +64,7 @@ Transform traditional learning into personalized, adaptive experiences powered b
 | Challenge                    | Impact                            |
 | ---------------------------- | --------------------------------- |
 | ⏰ **Fixed Pace Learning**   | Students fall behind or get bored |
-| � **Generic Content**        | Irrelevant to individual goals    |
+| 📄 **Generic Content**        | Irrelevant to individual goals    |
 | 🎯 **No Personalization**    | Ignores learning preferences      |
 | 📊 **Limited Feedback**      | No adaptive improvement           |
 | 🤖 **Lack of AI Assistance** | Students learn alone              |
@@ -94,7 +94,7 @@ graph TD
 - **🧠 Adaptive Intelligence**: Platform learns and evolves with you
 - **🎯 Goal-Oriented Learning**: Every lesson aligned with your objectives
 - **⚡ Instant AI Support**: Get help the moment you need it
-- **� Modern Experience**: Beautiful, responsive design across all devices
+- **💻 Modern Experience**: Beautiful, responsive design across all devices
 
 ---
 
@@ -418,7 +418,7 @@ Before you begin, ensure you have these tools installed:
 | ----------------- | ---------- | ------------------ |
 | 🟢 **Node.js**    | `>= 18.17` | JavaScript runtime |
 | 📦 **npm**        | `>= 9.0`   | Package manager    |
-| �️ **PostgreSQL** | `>= 14.0`  | Database           |
+| 🗄️ **PostgreSQL** | `>= 14.0`  | Database           |
 | 🔧 **Git**        | `latest`   | Version control    |
 
 ### ⚡ Quick Setup (5 minutes)
@@ -841,7 +841,7 @@ Transition:    duration-300
 
 ---
 
-## � Security
+## 🔒 Security
 
 ### Security Features
 
@@ -1070,7 +1070,7 @@ We welcome contributions from the community! Whether you're a developer, designe
 - 💡 **Suggest Features**: Have an idea? We'd love to hear it!
 - 📚 **Improve Documentation**: Help make our docs clearer
 - 🎨 **UI/UX Improvements**: Make the platform more beautiful
-- � **Code Contributions**: Add new features or fix bugs
+- 💻 **Code Contributions**: Add new features or fix bugs
 - 🌍 **Translations**: Help make education accessible globally
 
 ### 📋 Development Guidelines
