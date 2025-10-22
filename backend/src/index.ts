@@ -37,8 +37,8 @@ app.use(helmet({
 app.use(corsMiddleware)
 
 // Body parsing
-app.use(express.json({ limit: '10mb' }))
-app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+app.use(express.json({ limit: env.BODY_SIZE_LIMIT }))
+app.use(express.urlencoded({ extended: true, limit: env.BODY_SIZE_LIMIT }))
 
 // Request logging
 app.use(requestLogger)

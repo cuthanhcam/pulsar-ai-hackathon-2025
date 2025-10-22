@@ -5,8 +5,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { env } from '../config/env'
 
-// Model configurations
-export const GEMINI_MODEL_PRIMARY = 'gemini-2.0-flash-exp'
+// Model configurations (from environment)
+export const GEMINI_MODEL_PRIMARY = env.GEMINI_MODEL || 'gemini-1.5-flash'
 export const GEMINI_MODEL_FALLBACK = 'gemini-1.5-flash'
 
 /**
@@ -110,13 +110,13 @@ export function parseJSONResponse<T = any>(text: string): T {
 }
 
 /**
- * Constants for credit costs
+ * Constants for credit costs (from environment)
  */
 export const CREDITS = {
-  COURSE: 30,
-  QUIZ: 10,
-  CHAT: 5,
-  MINDMAP: 10,
-  DEFAULT_USER: 500,
+  COURSE: env.CREDIT_COST_COURSE_GENERATE,
+  QUIZ: env.CREDIT_COST_QUIZ_GENERATE,
+  CHAT: env.CREDIT_COST_CHAT_MESSAGE,
+  SECTION: env.CREDIT_COST_SECTION_GENERATE,
+  DEFAULT_USER: env.DEFAULT_CREDITS,
 } as const
 

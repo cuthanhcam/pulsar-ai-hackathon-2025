@@ -6,13 +6,14 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+const API_TIMEOUT = parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || '30000')
 
 /**
  * Create axios instance with default config
  */
 const apiClient: AxiosInstance = axios.create({
   baseURL: `${API_URL}/api`,
-  timeout: 30000, // 30 seconds
+  timeout: API_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },

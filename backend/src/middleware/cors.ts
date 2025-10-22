@@ -8,22 +8,21 @@ import { env } from '../config/env'
 
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
-    // Allow requests from frontend or no origin (e.g., Postman)
-    const allowedOrigins = [
-      env.FRONTEND_URL,
-      'http://localhost:3000',
-      'http://localhost:3001',
-    ]
+    // Parse allowed origins from env (comma-separated)
+    const allowedOrigins = env.ALLOWED_ORIGINS 
+      ? env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+      : [env.FRONTEND_URL]
     
+    // Allow requests from allowed origins or no origin (e.g., Postman, mobile apps)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error(`Origin ${origin} not allowed by CORS`))
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  maxAge: 86400, // 24 hours
+  maxAge: env.CORS_MAX_AGE,
 })
 

@@ -14,11 +14,13 @@ export interface JWTPayload {
 /**
  * Generate JWT token
  * @param payload - User data to encode
- * @param expiresIn - Token expiration time (default: 7 days)
+ * @param expiresIn - Token expiration time (default: from env)
  * @returns JWT token
  */
-export function generateToken(payload: JWTPayload, expiresIn: string = '7d'): string {
-  return jwt.sign(payload, env.JWT_SECRET, { expiresIn })
+export function generateToken(payload: JWTPayload, expiresIn?: string): string {
+  return jwt.sign(payload, env.JWT_SECRET, { 
+    expiresIn: expiresIn || env.JWT_EXPIRES_IN 
+  })
 }
 
 /**
@@ -38,9 +40,12 @@ export function verifyToken(token: string): JWTPayload | null {
 /**
  * Generate refresh token (longer expiration)
  * @param payload - User data to encode
+ * @param expiresIn - Token expiration time (default: from env)
  * @returns Refresh token
  */
-export function generateRefreshToken(payload: JWTPayload): string {
-  return jwt.sign(payload, env.JWT_SECRET, { expiresIn: '30d' })
+export function generateRefreshToken(payload: JWTPayload, expiresIn?: string): string {
+  return jwt.sign(payload, env.JWT_SECRET, { 
+    expiresIn: expiresIn || env.JWT_REFRESH_EXPIRES_IN 
+  })
 }
 
