@@ -526,7 +526,9 @@ npm run dev
 | `NEXTAUTH_URL` | Frontend application URL | `http://localhost:3000` (dev) or production URL |
 | `NEXTAUTH_SECRET` | Session encryption key | Run: `openssl rand -base64 32` |
 
-See [`backend/.env.example`](./backend/.env.example) and [`frontend/.env.example`](./frontend/.env.example) for all available options.
+See [`backend/env.example`](./backend/env.example) and [`frontend/env.example`](./frontend/env.example) for all available options.
+
+**📖 For detailed documentation, see [ENVIRONMENT_VARIABLES.md](./ENVIRONMENT_VARIABLES.md)**
 
 ---
 
